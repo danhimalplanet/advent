@@ -4,4 +4,4 @@
  
 * put your solutions in directory username/day*
 
-  * example danhimalplanet/day1
+  * example danhimalplanet/day1/
