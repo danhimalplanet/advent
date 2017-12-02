@@ -1,6 +1,6 @@
 use Test;
 
-use lib 'lib';
+use lib $*PROGRAM.parent.parent.child('lib');
 use Day1;
 
 plan 9;

@@ -1,5 +1,5 @@
 #!/usr/bin/env perl6
-use lib 'lib';
+use lib $*PROGRAM.parent.child('lib');
 use Day1;
 
 sub MAIN(Str $captcha where /^\d+$/) {
