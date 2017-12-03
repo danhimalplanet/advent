@@ -11,6 +11,14 @@ public class InverseCaptcha {
 
 
     public static void main(String[] args) {
+
+
+        System.out.println("Matching sum: " + sumMatching());
+
+
+    }
+
+    public static int sumMatching() {
         int first = charToInt(input.charAt(0));
         int last = charToInt(input.charAt(input.length()-1));
         if (first == last) {
@@ -31,11 +39,7 @@ public class InverseCaptcha {
             }
         }
 
-        int sum = toSummate.stream().collect(Collectors.summingInt(Integer::intValue));
-
-        System.out.println("Final sum: " + sum);
-
-
+        return toSummate.stream().collect(Collectors.summingInt(Integer::intValue));
     }
 
     public static int charToInt(char value) {
