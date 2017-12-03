@@ -12,7 +12,7 @@
            <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-jar-plugin</artifactId>
-               <version>2.4</version>
+               <version>3.0.2</version>
                <configuration>
                    <archive>
                        <index>true</index>
@@ -21,6 +21,14 @@
                            <mainClass>com.advent2017.InverseCaptcha</mainClass>
                        </manifest>
                    </archive>
+               </configuration>
+           </plugin>
+           <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-compiler-plugin</artifactId>
+               <configuration>
+                   <source>1.8</source>
+                   <target>1.8</target>
                </configuration>
            </plugin>
         </plugins>
@@ -35,5 +43,12 @@
     </properties>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
     </dependencies>
 </project>
