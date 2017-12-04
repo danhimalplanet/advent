@@ -16,6 +16,7 @@ public class Checksum {
     public static void main(String[] args) throws IOException {
         Checksum checksum = new Checksum();
         System.out.println("Checksum: " + checksum.calculateChecksum(checksum.readTsvAndPopulateDiffs("/spreadsheet.tsv")));
+        System.out.println("Evenly divisible checksum: " + checksum.calculateChecksum(checksum.readTsvAndCalculateEvenDivisors("/spreadsheet.tsv")));
 
     }
 
@@ -33,21 +34,61 @@ public class Checksum {
         return max-min;
     }
 
+    private Integer calculateEvenDivisorsInRow(String tsvLine) {
+        List<Integer> evens = new ArrayList<>();
+        List<Integer> row = readRow(tsvLine).stream().sorted().collect(Collectors.toList());
+        int rowSize = row.size();
+        for (int i = 0; i < rowSize; i++) {
+            for (int j = 0; j < rowSize; j++) {
+                // don't want to divide two of the same numbers
+                if (row.get(i) == row.get(j)) {
+                    continue;
+                }
+                if ((row.get(i) % row.get(j) == 0)) {
+                    evens.add(row.get(i)/row.get(j));
+                }
+            }
+        }
+
+        return evens.stream().mapToInt(i -> i).sum();
+
+    }
+
     private List<Integer> readTsvAndPopulateDiffs(String fileName) throws IOException {
         List<Integer> diffs = new ArrayList<>();
 
-        InputStream is = Checksum.class.getResourceAsStream(fileName);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        String line;
-        while ((line = reader.readLine()) != null) {
+        for (String line : this.readTsv(fileName)) {
             diffs.add(calculateDiff(line));
         }
         return diffs;
 
     }
 
-    private Integer calculateChecksum(List<Integer> diffs) {
-        return diffs.stream().mapToInt(i -> i).sum();
+    private List<Integer> readTsvAndCalculateEvenDivisors(String fileName) throws IOException {
+        List<Integer> divisors = new ArrayList<>();
+
+        for (String line : this.readTsv(fileName)) {
+            divisors.add(calculateEvenDivisorsInRow(line));
+        }
+        return divisors;
+
+    }
+
+    private List<String> readTsv(String fileName) throws IOException {
+        List<String> numbers = new ArrayList<>();
+
+        InputStream is = Checksum.class.getResourceAsStream(fileName);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            numbers.add(line);
+        }
+        return numbers;
+
+    }
+
+    private Integer calculateChecksum(List<Integer> numbers) {
+        return numbers.stream().mapToInt(i -> i).sum();
     }
 
 

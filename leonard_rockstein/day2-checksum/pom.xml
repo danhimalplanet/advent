@@ -12,7 +12,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>spreadsheet.tsv</include>
+                    <include>*</include>
                 </includes>
             </resource>
         </resources>
