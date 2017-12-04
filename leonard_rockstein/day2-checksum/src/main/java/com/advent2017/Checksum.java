@@ -1,28 +1,53 @@
 package com.advent2017;
 
 
-import java.io.*;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Checksum {
 
+
     public static void main(String[] args) throws IOException {
         Checksum checksum = new Checksum();
-        System.out.println(checksum.readTsv("/spreadsheet.tsv"));
+        System.out.println("Checksum: " + checksum.calculateChecksum(checksum.readTsvAndPopulateDiffs("/spreadsheet.tsv")));
 
     }
 
-    private String readTsv(String fileName) throws IOException {
+    private List<Integer> readRow(String tsvLine) {
+        return Arrays.asList(tsvLine.split("\t"))
+                .stream()
+                .map(t -> Integer.parseInt(t))
+                .collect(Collectors.toList());
+    }
 
-        StringBuilder result = new StringBuilder("");
+    private Integer calculateDiff(String tsvLine) {
+        List<Integer> row = readRow(tsvLine);
+        Integer min = row.stream().mapToInt(i -> i).min().getAsInt();
+        Integer max = row.stream().mapToInt(i -> i).max().getAsInt();
+        return max-min;
+    }
+
+    private List<Integer> readTsvAndPopulateDiffs(String fileName) throws IOException {
+        List<Integer> diffs = new ArrayList<>();
+
         InputStream is = Checksum.class.getResourceAsStream(fileName);
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String line;
         while ((line = reader.readLine()) != null) {
-            result.append(line).append("\n");
+            diffs.add(calculateDiff(line));
         }
-        return result.toString();
+        return diffs;
 
+    }
+
+    private Integer calculateChecksum(List<Integer> diffs) {
+        return diffs.stream().mapToInt(i -> i).sum();
     }
 
 
