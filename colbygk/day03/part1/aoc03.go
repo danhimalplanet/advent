@@ -4,7 +4,7 @@ import "fmt"
 
 // Based on Ulam's Spiral
 //   There is a recurrence relation that
-//     defines the size of each successfu layer
+//     defines the size of each successive layer
 //     in the spiral
 //     a_n = (8*n) + a_(n-1)
 //   Then, using modular arithmetic, solve for
