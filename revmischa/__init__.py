@@ -1,7 +1,7 @@
-from .computer import Computer  # noqa
+from revmischa.computer import Computer  # noqa
 
-def main(input_: str, computer_cls: Computer):
-    computer = computer_cls.new_from_puzzle_input(input_)
+def main(computer_cls: Computer, puzzle_input: str=None):
+    computer = computer_cls.new_from_puzzle_input(puzzle_input)
     answer_1 = computer.run_part1()
     print(f'Part I Answer: {answer_1}')
     answer_2 = computer.run_part2()

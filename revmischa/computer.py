@@ -4,6 +4,7 @@ Used day7 onwards.
 """
 from abc import ABC, abstractmethod  # abstract base class
 import re
+import os
 
 
 class Computer(ABC):
@@ -11,24 +12,35 @@ class Computer(ABC):
 
     Handles parsing puzzle imports and defines protocol for computing part I and part II answers.
     """
+    pwd = None
+
     @classmethod
-    def new_from_puzzle_input(cls, input_: str=None):
-        """Parse puzzle input string into python data structure and construct computer.
+    def new_from_puzzle_input(cls, input_str: str):
+        """Parse puzzle input string and construct computer.
 
         If input_ is not specified, read from input.txt.
         """
-        if not input_:
-            with open("input.txt", 'r') as input_file:
-                input_ = input_file.read()
+        if not input_str:
+            input_path = os.path.join(cls.pwd, "input.txt") if cls.pwd else "input.txt"
+            with open(input_path, 'r') as input_file:
+                input_str = input_file.read()
+        parsed = cls.parse_input(input_str)
+        return cls(parsed)
 
+    @classmethod
+    def parse_input(cls, input_str: str):
+        """Convert input to python data structure.
+
+        By default converts a list of ints.
+        """
         parsed = list(
             map(
                 int,
                 filter(lambda n: n is not None and n is not "",
-                       re.split(r"\s+", input_))
+                       re.split(r"\s+", input_str))
             )
         )
-        return cls(parsed)
+        return parsed
 
     def __init__(self, structure):
         super().__init__()
