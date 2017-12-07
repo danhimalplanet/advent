@@ -56,7 +56,7 @@ def one(base):
     return base
 
 
-def two2(weights, above, tree, base, diff=0):
+def two(weights, above, tree, base, diff=0):
     def sumweights(subtree):
         s = weights[subtree]
         for sub in tree[subtree]:
@@ -69,13 +69,13 @@ def two2(weights, above, tree, base, diff=0):
 
     # print(base, weights[base], wsub)
     if len(wsub) == 2:
-        # something is heavier than the rest
-        # wsub[keys[0]] is the unbalanced subtree
+        # something is heavier/lighter than the rest
+        # make wsub[keys[0]] the unbalanced subtree root
         keys = wsub.keys()
         keys.sort(key=lambda k: len(wsub[k]))
         # print(keys)
         diff = keys[1] - keys[0]
-        return two2(weights, above, tree, wsub[keys[0]][0], diff)
+        return two(weights, above, tree, wsub[keys[0]][0], diff)
     else:
         return weights[base] + diff
 
@@ -86,7 +86,7 @@ def main(args):
     tree, base = maketree(weights, above)
 
     print(one(base))
-    print(two2(weights, above, tree, base))
+    print(two(weights, above, tree, base))
 
 
 if __name__ == "__main__":
