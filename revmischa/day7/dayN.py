@@ -46,22 +46,15 @@ class Node(NodeTuple):
         print_node(0, self)
         return p_r(1, self.child_nodes)
 
-    def find_unbalanced(self):
-        def f_r(root):
-            child_weights = root.get_child_weights(inclusive=True)
-
-
-            print(f"weights of [{root}]: {child_weights}")
-            # if f_r(c):
-            #     return f_r(c)
-
+    def find_unbalanced_child_node(self):
+        def f_n(node):
+            child_weights = node.get_child_weights()
+            broken_node = None
+            correct = None
+            wrong = None
             if len(set(child_weights)) > 1:
-                # unbalanced; mismatch
                 print(f"found mismatch: {set(child_weights)}")
-
                 print(f"weights: {child_weights}")
-                correct = None
-                wrong = None
                 for w in child_weights:
                     # w += root.weight
                     if child_weights.count(w) == 1:
@@ -69,22 +62,57 @@ class Node(NodeTuple):
                     else:
                         correct = w
 
-                # fix weight
-                print(root.child_nodes)
+                print(node.child_nodes)
                 print(f"correct: {correct}, wrong: {wrong}")
-                broken_node = [n for n in root.child_nodes if n.weight_with_children() != correct][0]
-                correct_nodes = [n for n in root.child_nodes if n.weight_with_children() == correct]
+                broken_node = [n for n in node.child_nodes if n.weight_with_children() != correct][0]
 
-                diff = wrong - correct
-                    
-                print(f"correcting {broken_node} with weight {correct}...")
-                fixed = broken_node._replace(weight=broken_node.weight - diff)
-                print(f"broken: {broken_node}, correct: {correct_nodes}")
-                new_children = [fixed, *correct_nodes]
-                print(new_children)
-                root = root._replace(child_nodes=new_children)
-                print(root.get_child_weights())
-                return fixed.weight
+                if len(set(broken_node.get_child_weights())) == 1:
+                    # this node is balanced above. we found the bad guy
+                    print(f"FOUND IT: {broken_node}")
+                    correct_nodes = [n for n in node.child_nodes if n.weight_with_children() == correct]
+                    return (broken_node, correct_nodes, wrong, correct)
+                else:
+                    return f_n(broken_node)
+            return None
+        return f_n(self)
+
+    def find_unbalanced(self):
+        def f_r(node):
+            child_weights = []
+            for c in node.child_nodes:
+                tower_weight = c.children_weight()
+                child_weights.append(tower_weight + c.weight)
+
+            print(f"weights of [{node} children]: {child_weights}")
+
+            # if len(set(child_weights)) == 1:
+            #     for c in node.child_nodes:
+            #         return f_r(c)
+
+            # unbalanced; mismatch
+
+            # check if broken node's children are balanced
+            unbalanced = node.find_unbalanced_child_node()
+            print(f"unbalanced: {unbalanced}")
+            if not unbalanced:
+                for c in node.child_nodes:
+                    return f_r(c)
+
+            (broken_node, correct_nodes, wrong, correct) = unbalanced
+
+            broken_child_weights = broken_node.get_child_weights()
+            print(f"broken_child_weights: {broken_child_weights}")
+
+            # fix weight
+            diff = wrong - correct
+            print(f"correcting {broken_node} with weight {correct}...")
+            fixed = broken_node._replace(weight=broken_node.weight - diff)
+            print(f"broken: {broken_node}, correct: {correct_nodes}")
+            new_children = [fixed, *correct_nodes]
+            print(new_children)
+            node = node._replace(child_nodes=new_children)
+            print(node.get_child_weights())
+            return fixed.weight
             #     for c in root.child_nodes:
             #         match_count = [n for n in ]
             #     idx = root.child_nodes.find
@@ -104,14 +132,15 @@ class Node(NodeTuple):
 
     def children_weight(self):
         children = self.all_children()
-        # print(f"children of {self}: {children}")
         sum_ = sum([c.weight for c in children])
+        # print(f"children of {self.name}: {children}, sum: {sum_}")
         return sum_
 
     def get_child_weights(self, inclusive=False):
         child_weights = []
         for c in self.child_nodes:
-            c_w = c.children_weight()
+            c_w = c.weight_with_children()
+            # print(f"child: {c}, weight: {c_w}")
             if inclusive:
                 c_w += c.weight
             child_weights.append(c_w)
@@ -123,7 +152,7 @@ class Node(NodeTuple):
     def __repr__(self):
         children = f" -> {self.child_names}" if self.child_names else ""
         # return f"{self.name} ({self.weight}/{self.weight_with_children()}){children}"
-        return f"{self.name} ({self.weight}/{self.children_weight()})"
+        return f"{self.name}({self.weight}/{self.children_weight()})"
 
     def __eq__(self, other):
         return self.name == other.name
