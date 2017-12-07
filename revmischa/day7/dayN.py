@@ -83,14 +83,6 @@ class Node(NodeTuple):
                 tower_weight = c.children_weight()
                 child_weights.append(tower_weight + c.weight)
 
-            print(f"weights of [{node} children]: {child_weights}")
-
-            # if len(set(child_weights)) == 1:
-            #     for c in node.child_nodes:
-            #         return f_r(c)
-
-            # unbalanced; mismatch
-
             # check if broken node's children are balanced
             unbalanced = node.find_unbalanced_child_node()
             print(f"unbalanced: {unbalanced}")
@@ -109,16 +101,8 @@ class Node(NodeTuple):
             fixed = broken_node._replace(weight=broken_node.weight - diff)
             print(f"broken: {broken_node}, correct: {correct_nodes}")
             new_children = [fixed, *correct_nodes]
-            print(new_children)
             node = node._replace(child_nodes=new_children)
-            print(node.get_child_weights())
             return fixed.weight
-            #     for c in root.child_nodes:
-            #         match_count = [n for n in ]
-            #     idx = root.child_nodes.find
-            # for w in child_weights:
-            #     if c.children_weight() != root.weight:
-            #         return c
         return f_r(self)
 
     def all_children(self):
@@ -133,16 +117,12 @@ class Node(NodeTuple):
     def children_weight(self):
         children = self.all_children()
         sum_ = sum([c.weight for c in children])
-        # print(f"children of {self.name}: {children}, sum: {sum_}")
         return sum_
 
-    def get_child_weights(self, inclusive=False):
+    def get_child_weights(self):
         child_weights = []
         for c in self.child_nodes:
             c_w = c.weight_with_children()
-            # print(f"child: {c}, weight: {c_w}")
-            if inclusive:
-                c_w += c.weight
             child_weights.append(c_w)
         return child_weights
 
@@ -151,7 +131,6 @@ class Node(NodeTuple):
 
     def __repr__(self):
         children = f" -> {self.child_names}" if self.child_names else ""
-        # return f"{self.name} ({self.weight}/{self.weight_with_children()}){children}"
         return f"{self.name}({self.weight}/{self.children_weight()})"
 
     def __eq__(self, other):
@@ -226,18 +205,10 @@ class DayN(Computer):
 
     def run_part1(self):
         root = self.gen_graph()
-        # print()
-        # print()
-        # root.dump()
-        # print()
         return root
 
     def run_part2(self):
         root = self.gen_graph()
-        print()
-        print()
-        root.dump(maxdepth=2)
-        print()
         unbalanced = root.find_unbalanced()
         return unbalanced
 
