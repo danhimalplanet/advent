@@ -29,6 +29,19 @@ class DayNTestCase(unittest.TestCase):
         t = DayN.new_from_puzzle_input(test_input)
         self.assertEqual(t.run_part1().name, 'tknk')
 
+    def test_part_2_root_weight(self):
+        t = DayN.new_from_puzzle_input(test_input)
+        root = t.gen_graph()
+        ugml = root.child_nodes[2]
+        padx = root.child_nodes[1]
+        fwft = root.child_nodes[0]
+        self.assertEqual(ugml.weight_with_children(), 251)
+        self.assertEqual(padx.weight_with_children(), 243)
+        self.assertEqual(fwft.weight_with_children(), 243)
+
     def test_part_2(self):
         t = DayN.new_from_puzzle_input(test_input)
-        self.assertEqual(t.run_part2(), 0)
+        root = t.gen_graph()
+        unbalanced = root.find_unbalanced()
+
+        self.assertEqual(unbalanced, 60)
