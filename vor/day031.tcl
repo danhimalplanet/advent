@@ -1,4 +1,4 @@
-set input 29
+set input 289326
 set runner [expr {round(sqrt($input))}]
 set lower [expr {($runner * ($runner - 1)) + 1}]
 set higher [expr {$runner * ($runner + 1)}]
