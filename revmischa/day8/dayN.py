@@ -102,8 +102,9 @@ class DayN(Computer):
         if comp not in ops:
             raise Exception(f"unknown comparator {comp}")
 
+        # compare
         op = ops[comp]
-        res = op(lhs_val, int(rhs))
+        res = op(lhs_val, rhs)
         if not res:
             return
 
