@@ -1062,11 +1062,7 @@ set last [expr {[llength $links]}]
 set indicy 0
 for {set x 1} {$x == $x} {incr x} {
   set current [lindex $links $indicy]
-  if {$current >= 3} {
-    set update [expr {$current - 1}]
-  } else {
-    set update [expr {$current +1}]
-  }
+  set update [expr {$current + [expr $current >= 3 ? -1: 1]}]
   set links [lset links $indicy $update]
   set indicy [expr {$indicy + $current}]
   if {$indicy < 0 || $indicy >= $last} {
