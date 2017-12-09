@@ -1,4 +1,4 @@
-set spread "nyot babgr babgr kqtu kqtu kzshonp ylyk psqk
+nyot babgr babgr kqtu kqtu kzshonp ylyk psqk
 iix ewj rojvbkk phrij iix zuajnk tadv givslju ewj bda
 isjur jppvano vctnpjp ngwzdq pxqfrk mnxxes zqwgnd giqh
 ojufqke gpd olzirc jfao cjfh rcivvw pqqpudp
@@ -509,23 +509,4 @@ nvifbx jbowbj fnyskt jbowbj xvun xvun
 piyl haajm stwzpp xvjg amjah
 gye efwwwiv kyv zmtcgmi ifwvwew
 dflx gdtb jyoj jyoj dflx aqhycgi xffnn
-inc mpys mzqmcwx vryz ibqrzc pmsy fat rojpxwy rcbqzi gjef"
-set checksum 0
-foreach i [split $spread '\n'] {
-    set bad 0
-    set jindex 0
-    foreach j $i {
-        incr jindex
-        set kindex 0
-        foreach k $i {
-            incr kindex
-            if {$bad == 0 && $k eq $j && $jindex != $kindex} {
-                set bad 1
-            }
-        }
-    }
-    if {$bad == 0} {
-        incr checksum
-    }
-}
-puts $checksum
+inc mpys mzqmcwx vryz ibqrzc pmsy fat rojpxwy rcbqzi gjef

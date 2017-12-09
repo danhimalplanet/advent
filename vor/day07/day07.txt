@@ -1,4 +1,4 @@
-set tower "llyhqfe (21)
+llyhqfe (21)
 vpbdpfm (74) -> ndegtj, wnwxs
 dosteiu (262) -> vliyv, rfxmk, nulxd, tckql
 leqnli (222) -> wuttw, nckca
@@ -1080,14 +1080,4 @@ nzyls (26)
 lsxwznl (77)
 zphlpeu (55)
 ckqwb (234)
-kligtj (80)"
-
-set layer [split $tower '\n']
-set branch [lsearch -all $layer *\-\>*]
-foreach i $branch {
-  set forker [string trim [lindex [split [lindex $layer $i] '('] 0]]  
-  set matcher [lsearch -all $layer *$forker*]
-  if ([expr {[llength $matcher]} < 2]) {
-    puts $forker
-  }
-}
+kligtj (80)
