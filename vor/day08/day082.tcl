@@ -5,6 +5,7 @@ close $fp
 
 array set pocket {}
 
+set largest 0
 foreach step [split $instruct '\n'] {
   set instruction   [split [string trim [expr {[lindex [split [expr {[string map {{ if } {:}} $step]}] ':'] 0]}]] " "]
   set ins_name      [expr {[lindex $instruction 0]}]
@@ -20,11 +21,7 @@ foreach step [split $instruct '\n'] {
   if {[expr ($con_value $con_symbol $con_result)]} {
     set ins_value [expr {[info exists pocket($ins_name)]? $pocket($ins_name) : 0 } ]
     set pocket($ins_name) [expr {$ins_value + [expr {($ins_direction eq "inc")? $ins_duration : -$ins_duration }]}]
+    set largest [expr {$pocket($ins_name) > $largest ? $pocket($ins_name) : $largest}]
   }
-}
-
-set largest 0
-foreach a [array names pocket] {
-  set largest [expr {$pocket($a) > $largest ? $pocket($a) : $largest}]
 }
 puts $largest
