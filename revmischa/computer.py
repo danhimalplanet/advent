@@ -15,6 +15,18 @@ class Computer(ABC):
     pwd = None
 
     @classmethod
+    def part1_result(cls, input_str: str):
+        """Return part one answer."""
+        comp = cls.new_from_puzzle_input(input_str)
+        return comp.run_part1()
+
+    @classmethod
+    def part2_result(cls, input_str: str):
+        """Return part two answer."""
+        comp = cls.new_from_puzzle_input(input_str)
+        return comp.run_part2()
+
+    @classmethod
     def new_from_puzzle_input(cls, input_str: str):
         """Parse puzzle input string and construct computer.
 
