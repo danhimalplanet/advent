@@ -17,10 +17,10 @@ class DayN(Computer):
         self.input = structure
 
     def run_part1(self):
-        pass
+        return 0
 
     def run_part2(self):
-        pass
+        return 0
 
 if __name__ == '__main__':
     main(DayN)
