@@ -15,19 +15,19 @@ class Computer(ABC):
     pwd = None
 
     @classmethod
-    def part1_result(cls, input_str: str):
+    def part1_result(cls, input_str: str, *args, **kwargs):
         """Return part one answer."""
-        comp = cls.new_from_puzzle_input(input_str)
+        comp = cls.new_from_puzzle_input(input_str, *args, **kwargs)
         return comp.run_part1()
 
     @classmethod
-    def part2_result(cls, input_str: str):
+    def part2_result(cls, input_str: str, *args, **kwargs):
         """Return part two answer."""
-        comp = cls.new_from_puzzle_input(input_str)
+        comp = cls.new_from_puzzle_input(input_str, *args, **kwargs)
         return comp.run_part2()
 
     @classmethod
-    def new_from_puzzle_input(cls, input_str: str):
+    def new_from_puzzle_input(cls, input_str: str, *args, **kwargs):
         """Parse puzzle input string and construct computer.
 
         If input_ is not specified, read from input.txt.
@@ -37,7 +37,7 @@ class Computer(ABC):
             with open(input_path, 'r') as input_file:
                 input_str = input_file.read()
         parsed = cls.parse_input(input_str)
-        return cls(parsed)
+        return cls(parsed, *args, **kwargs)
 
     @classmethod
     def parse_input(cls, input_str: str):
@@ -64,3 +64,11 @@ class Computer(ABC):
     @abstractmethod
     def run_part2(self):
         pass
+
+def main(computer_cls: Computer, puzzle_input: str=None, *args, **kwargs):
+    computer = computer_cls.new_from_puzzle_input(puzzle_input, *args, **kwargs)
+    answer_1 = computer.run_part1()
+    print(f'Part I Answer: {answer_1}')
+    computer = computer_cls.new_from_puzzle_input(puzzle_input, *args, **kwargs)
+    answer_2 = computer.run_part2()
+    print(f'Part II Answer: {answer_2}')
