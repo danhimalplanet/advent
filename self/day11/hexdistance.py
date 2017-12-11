@@ -10,8 +10,7 @@ C2 = {
     "nw": complex(-1, 1),
     "se": complex(1, -1),
     "s": complex(0, -1),
-    "sw": complex(-1, -1),
-    "zero": complex(0, 0)
+    "sw": complex(-1, -1)
 }
 
 C = {
@@ -20,8 +19,7 @@ C = {
     "nw": complex(-0.5, 0.5),
     "se": complex(0.5, -0.5),
     "s": complex(0, -1),
-    "sw": complex(-0.5, -0.5),
-    "zero": complex(0, 0)
+    "sw": complex(-0.5, -0.5)
 }
 
 
