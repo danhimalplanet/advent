@@ -5,6 +5,7 @@ close $fp
 set instructions [expr {[split $instructions ',']}]
 set x 0
 set y 0
+set maxdist 0
 foreach j $instructions {
   if {[string length $j] == 1} {
     set y [expr {$j == "n"? $y - 1: $y + 1}]
@@ -18,19 +19,22 @@ foreach j $instructions {
     } 
     set x [expr {[string range $j 1 1] == "e"? $x + 1: $x - 1}]
   }
-}
-set ax [expr { abs($x) }]
-set ay [expr { abs($y) }]
-if {$ax > $ay} {
-  if {$ay < round($ax/2)} {
-    set z $ax
+  
+  set ax [expr { abs($x) }]
+  set ay [expr { abs($y) }]
+  if {$ax > $ay} {
+    if {$ay < round($ax/2)} {
+      set z $ax
+    } else {
+    set z [expr {$ax/2 + $ay}]
+    }
+  } elseif {$ay > $ax} {
+    set z [expr {($ay - $ax/2) + $ax}]
   } else {
-  set z [expr {$ax/2 + $ay}]
+    set z [expr {$ax * 1.5}]
   }
-
-} elseif {$ay > $ax} {
-  set z [expr {($ay - $ax/2) + $ax}]
-} else {
-  set z [expr {$ax * 1.5}]
+  if {$z > $maxdist} {
+    set maxdist $z
+  }
 }
- puts $z
+puts $maxdist

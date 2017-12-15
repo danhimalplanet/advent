@@ -3,26 +3,15 @@ set fp [open "day09.txt" r]
 set stream [read $fp $fsize]
 close $fp
 
-set total 0
-set stream [expr {[string map {\!> #} [expr {$stream}]]}]
-set stream [expr {[string map {\!\! z} [expr {$stream}]]}]
-set stream [expr {[string map {\!# >} [expr {$stream}]]}]
-regsub -all {<([^>]+)?>|,} $stream {} stream
-puts $stream
+regsub -all {!!|!>} $stream {} swap
+regsub -all {<(?:[^>]+)?>|,} $swap {} swap
+puts $swap
 
-#1. find max level
-set max_level 9
-
-#for each level from max_level to 0
-  set step [expr {$max_level - 1}]
-
-  # $count {} within the current step
-  # (?<=[,}][\{]{$step})({})
-
-  # Add ($count * $max_level)
-
-  # Remove {} from this level
-
-# loop down a level
-
-# puts #total
+for {set x 1}{$x != $x} {incr x} {
+# if ({([\d,]+)})
+#   find all (?<={)([\d,]+)(?=}) and increase each number by 1
+#   find all ({([\d,]+)}) and replace with 1,$2
+# else break
+}
+# sum all ,
+# puts $total
