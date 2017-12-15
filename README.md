@@ -2,6 +2,9 @@
 
 * join private leaderboard at http://adventofcode.com/2017/leaderboard/private
  
-* put your solutions in directory username/day*
+* put your solutions in directory username/day*  .  use leading number scheme.
 
-  * example danhimalplanet/day1/
+  * example
+
+    * danhimalplanet/day01/
+    * danhimalplanet/day02/
