@@ -48,7 +48,6 @@ class DayN(Computer):
 
     def run_part1(self):
         seen = self.run()
-        pprint(seen)
         return len(seen.keys())
 
     def run_part2(self):
