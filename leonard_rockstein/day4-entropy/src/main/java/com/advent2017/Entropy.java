@@ -1,27 +1,36 @@
 package com.advent2017;
 
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Entropy {
 
-    private static final String goodInput = "aa bb cc dd ee";
-    private static final String badInput = "aa bb cc dd aa";
 
-    public static void main(String[] args) {
-        System.out.println("Number of valid passphrases: " + numberOfValidPassphrases(goodInput));
-        System.out.println("Good input: " + goodInput + ": " + validPassphrase(goodInput));
-        System.out.println("Bad input: " + badInput + ": " + validPassphrase(badInput));
+    public static void main(String[] args) throws IOException {
+        Entropy entropy = new Entropy();
+        System.out.println("Number of valid passphrases: " + entropy.numberOfValidPassphrases());
 
     }
 
-    public static int numberOfValidPassphrases(String input) {
-        return 1;
+    public int numberOfValidPassphrases() throws IOException {
+        int validPassphrases = 0;
+        for (String line : this.readTsv("/passphrases.txt")) {
+            if (validPassphrase(line)) {
+                validPassphrases += 1;
+            }
+        }
+        return validPassphrases;
     }
 
-    public static boolean validPassphrase(String passphrase) {
+    public boolean validPassphrase(String passphrase) {
         Map<String, Boolean> seen = new HashMap<>();
 
         String[] words = passphrase.split("\\s");
@@ -34,6 +43,19 @@ public class Entropy {
         }
 
         return true;
+
+    }
+
+    private List<String> readTsv(String fileName) throws IOException {
+        List<String> lines = new ArrayList<>();
+
+        InputStream is = Entropy.class.getResourceAsStream(fileName);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            lines.add(line);
+        }
+        return lines;
 
     }
 
