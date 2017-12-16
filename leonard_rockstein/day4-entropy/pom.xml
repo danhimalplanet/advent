@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.advent2017</groupId>
-    <artifactId>checksum</artifactId>
+    <artifactId>entropy</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <build>
@@ -26,7 +26,7 @@
                         <index>true</index>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.advent2017.Checksum</mainClass>
+                            <mainClass>com.advent2017.Entropy</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -41,8 +41,8 @@
             </plugin>
         </plugins>
     </build>
-    <name>checksum</name>
-    <description>Checksum</description>
+    <name>entropy</name>
+    <description>Entropy</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
