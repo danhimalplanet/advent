@@ -27,16 +27,16 @@ class Computer(ABC):
         return comp.run_part2()
 
     @classmethod
-    def new_from_puzzle_input(cls, *args, **kwargs):
+    def new_from_puzzle_input(cls, input_=None, *args, **kwargs):
         """Parse puzzle input string and construct computer.
 
         If input_ is not specified, read from input.
         """
-        if not args:
+        if not input_:
             input_path = os.path.join(cls.pwd, "input") if cls.pwd else "input"
             with open(input_path, 'r') as input_file:
-                args = [input_file.read()]
-        parsed = cls.parse_input(*args, **kwargs)
+                input_ = input_file.read()
+        parsed = cls.parse_input(input_)
         return cls(parsed, *args, **kwargs)
 
     @classmethod
