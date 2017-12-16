@@ -15,28 +15,28 @@ class Computer(ABC):
     pwd = None
 
     @classmethod
-    def part1_result(cls, input_str: str, *args, **kwargs):
+    def part1_result(cls, *args, **kwargs):
         """Return part one answer."""
-        comp = cls.new_from_puzzle_input(input_str, *args, **kwargs)
+        comp = cls.new_from_puzzle_input(*args, **kwargs)
         return comp.run_part1()
 
     @classmethod
-    def part2_result(cls, input_str: str, *args, **kwargs):
+    def part2_result(cls, *args, **kwargs):
         """Return part two answer."""
-        comp = cls.new_from_puzzle_input(input_str, *args, **kwargs)
+        comp = cls.new_from_puzzle_input(*args, **kwargs)
         return comp.run_part2()
 
     @classmethod
-    def new_from_puzzle_input(cls, input_str: str, *args, **kwargs):
+    def new_from_puzzle_input(cls, *args, **kwargs):
         """Parse puzzle input string and construct computer.
 
         If input_ is not specified, read from input.
         """
-        if not input_str:
+        if not args:
             input_path = os.path.join(cls.pwd, "input") if cls.pwd else "input"
             with open(input_path, 'r') as input_file:
-                input_str = input_file.read()
-        parsed = cls.parse_input(input_str)
+                args = [input_file.read()]
+        parsed = cls.parse_input(*args, **kwargs)
         return cls(parsed, *args, **kwargs)
 
     @classmethod
@@ -54,7 +54,7 @@ class Computer(ABC):
         )
         return parsed
 
-    def __init__(self, structure):
+    def __init__(self, *args, **kwargs):
         super().__init__()
 
     @abstractmethod
