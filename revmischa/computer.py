@@ -30,10 +30,10 @@ class Computer(ABC):
     def new_from_puzzle_input(cls, input_str: str, *args, **kwargs):
         """Parse puzzle input string and construct computer.
 
-        If input_ is not specified, read from input.txt.
+        If input_ is not specified, read from input.
         """
         if not input_str:
-            input_path = os.path.join(cls.pwd, "input.txt") if cls.pwd else "input.txt"
+            input_path = os.path.join(cls.pwd, "input") if cls.pwd else "input"
             with open(input_path, 'r') as input_file:
                 input_str = input_file.read()
         parsed = cls.parse_input(input_str)
