@@ -19,6 +19,7 @@ class DayN(Computer):
         self.input = structure
         self.moves = moves
         chars = [x for x in range(0, size)]
+        self.chars = chars
         self.l_ = np.asarray(chars)
         self.insts = []
         self.parse_instructions()
@@ -82,14 +83,9 @@ class DayN(Computer):
             sl.append(s)
 
             if s in self.seen:
-                # print(f"Found cycle at iter {n} {s}: {self.seen[s]} cycles: {cycle_num}, n%c {self.moves % cycle_count}")
-                return sl[self.moves % n]
+                return sl[self.moves % (n - 1)]
             else:
                 self.seen[s] = 1
 
 if __name__ == '__main__':
     main(DayN, moves=1000000000)
-    # comp = DayN.new_from_puzzle_input(moves=1000000000)
-    # print(comp.run_part1())
-    # print(comp.run_part2())
-    # main(DayN, moves=100)
