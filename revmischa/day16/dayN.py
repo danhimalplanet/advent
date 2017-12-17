@@ -22,7 +22,6 @@ class DayN(Computer):
         self.l_ = np.asarray(chars)
         self.insts = []
         self.parse_instructions()
-
         self.seen = {}
 
     @classmethod
@@ -79,11 +78,7 @@ class DayN(Computer):
     def run_part2(self):
         sl = []
         for n in range(0, self.moves):
-            # print(f"Move {n}")
-            for inst in self.insts:
-                self.do_inst(inst)
-
-            s = str(self)
+            s = self.run_part1()
             sl.append(s)
 
             if s in self.seen:
@@ -94,4 +89,7 @@ class DayN(Computer):
 
 if __name__ == '__main__':
     main(DayN, moves=1000000000)
-    #main(DayN, moves=100)
+    # comp = DayN.new_from_puzzle_input(moves=1000000000)
+    # print(comp.run_part1())
+    # print(comp.run_part2())
+    # main(DayN, moves=100)
