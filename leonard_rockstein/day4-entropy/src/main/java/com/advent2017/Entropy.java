@@ -50,11 +50,14 @@ public class Entropy {
     public boolean containsAnagram(String line) {
         Map<String, String> anagramHashes = new HashMap<>();
         String[] wordsInLine = line.split("\\s");
-        String baseWord = wordsInLine[0].toLowerCase();
-        anagramHashes.put(hashAnagram(baseWord), baseWord);
-        for (String comparisonWord : Arrays.copyOfRange(wordsInLine, 1, wordsInLine.length)) {
-            if (anagramHashes.containsKey(hashAnagram(comparisonWord.toLowerCase()))) {
-                return true;
+        
+        for (int i = 0; i < wordsInLine.length; i++) {
+            String baseWord = wordsInLine[i].toLowerCase();
+            anagramHashes.put(hashAnagram(baseWord), baseWord);
+            for (String comparisonWord : Arrays.copyOfRange(wordsInLine, i+1, wordsInLine.length)) {
+                if (anagramHashes.containsKey(hashAnagram(comparisonWord.toLowerCase()))) {
+                    return true;
+                }
             }
         }
         
