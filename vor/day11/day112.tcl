@@ -2,6 +2,7 @@ set fsize [file size "day11.txt"]
 set fp [open "day11.txt" r]
 set instructions [read $fp $fsize]
 close $fp
+
 set instructions [expr {[split $instructions ',']}]
 set x 0
 set y 0
