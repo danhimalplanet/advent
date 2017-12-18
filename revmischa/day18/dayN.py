@@ -31,11 +31,15 @@ class DayN(Computer):
         self.other_q = None
 
     def __getitem__(self, reg):
+        if reg not in list('abcdefghijklmnop'):
+            raise Exception(f"invalid register {reg}")
         if reg in self.regs:
             return self.regs[reg]
         return 0
 
     def __setitem__(self, reg, val):
+        if reg not in list('abcdefghijklmnop'):
+            raise Exception(f"invalid register {reg}")
         self.regs[reg] = val
 
     @classmethod
@@ -46,6 +50,10 @@ class DayN(Computer):
             code = line.split(' ')
             op: str = code[0]
             reg: str = code[1]
+
+            if not reg.isalpha():
+                reg = int(reg)
+
             operand: Any = None
             if len(code) == 3:
                 if code[2].isalpha():
@@ -62,6 +70,7 @@ class DayN(Computer):
             if type(operand) is str:
                 operand = self[operand]
 
+            # print(f"[{self.p}]  -  {i} reg: {reg}, operand: {operand}")
             # print(f"[{self.p}]  -  {i} reg: {reg}, val: {self[reg]}, operand: {operand}")
 
             if op == 'snd':
@@ -80,7 +89,8 @@ class DayN(Computer):
                     self.last_recv = self.last_snd
                     return
             elif op == 'jgz':
-                v = self[reg]
+                # print(f"reg: {reg}, type: {type(reg)}")
+                v = self[reg] if type(reg) is str else reg
                 if v > 0:
                     self.pc += operand
                     continue
@@ -113,20 +123,20 @@ class Day18b(DayN):
         receiving[self.p] = True
 
         # print(f"[{self.p}] Receiving: {receiving}")
-        print(f"[{self.p}] qsize: {self.q.qsize()} other: {self.other_q.qsize()}")
+        # print(f"[{self.p}] qsize: {self.q.qsize()} other: {self.other_q.qsize()}")
 
         if all(receiving.values()) and self.q.empty() and self.other_q.empty():
             raise DeadlockException()
 
         r = await self.q.get()
-        print(f"Received {reg}={r}")
+        # print(f"Received {reg}={r}")
         receiving[self.p] = False
         self[reg] = r
 
     async def snd(self, operand):
         if operand.isalpha():
             operand = self[operand]
-        print(f"[{self.p}] Sending {operand}, count = {self.send_count + 1}")
+        # print(f"[{self.p}] Sending {operand}, count = {self.send_count + 1}")
         await self.other_q.put(operand)
         self.send_count += 1
 
