@@ -67,12 +67,13 @@ class DayN(Computer):
         second = final[1]
         return first * second
 
-    def run_part2(self):
-        lengths_ascii = list(map(ord, "83,0,193,1,254,237,187,40,88,27,2,255,149,29,42,100"))
-        lengths_ascii += [17, 31, 73, 47, 23]
-        self.lengths = lengths_ascii[:]
+    def run_part2(self, key_ascii: str):
+        if not key_ascii:
+            key_ascii = list(map(ord, "83,0,193,1,254,237,187,40,88,27,2,255,149,29,42,100"))
+            self.lengths = key_ascii[:]
+        orig = self.lengths[:] + [17, 31, 73, 47, 23]
         for r in range(0, 64):
-            self.lengths = lengths_ascii[:]
+            self.lengths = orig[:]
             while self.lengths:
                 self.one_loop()
 
@@ -84,18 +85,13 @@ class DayN(Computer):
             block = c[i * 16:i * 16 + 16]
             reduced = reduce(lambda x, y: x ^ y, block)
             dense_hash.append(reduced)
-        print(self.get_c())
-        print(dense_hash)
 
         h = ""
         for d in dense_hash:
             h_ = "{:02x}".format(d)
-            print(h_)
-            h += hex(d)[2:]
+            h += h_
 
-        print(h)
-
-        return 0
+        return h
 
 if __name__ == '__main__':
     main(DayN, size=256)
