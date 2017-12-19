@@ -21,4 +21,4 @@ class DayNTestCase(unittest.TestCase):
         self.assertEqual(DayN.part1_result(test_input), 'ABCDEF')
 
     def test_part_2(self):
-        self.assertEqual(DayN.part2_result(test_input), 0)
+        self.assertEqual(DayN.part2_result(test_input), 38)

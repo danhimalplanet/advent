@@ -16,6 +16,7 @@ class DayN(Computer):
         """Construct solver with puzzle input."""
         super().__init__(structure)
         self.input = structure
+        self.steps = 0
 
     @classmethod
     def parse_input(cls, input_str: str):
@@ -37,7 +38,9 @@ class DayN(Computer):
         direction = 'd'
 
         done = False
+        steps = 0
         while not done:
+            steps += 1
             char = grid[y][x]
             # print(f"[{x},{y}] {char}  dir={direction}  last_dir={last_dir}")
 
@@ -74,10 +77,12 @@ class DayN(Computer):
                 x -= 1
             else:
                 raise Exception(f"unknown direction {direction}")
+        self.steps = steps - 1
         return ''.join(collected)
 
     def run_part2(self):
-        return 0
+        self.run_part1()
+        return self.steps
 
 if __name__ == '__main__':
     main(DayN)
