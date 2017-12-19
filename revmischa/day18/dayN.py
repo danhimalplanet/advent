@@ -98,6 +98,7 @@ class DayN(Computer):
                 print(f"Unknown op {op}")
 
             self.pc += 1
+        print(f"RAN TO END")
 
     async def rcv(self, reg):
         self[reg] = self.last_snd
@@ -136,9 +137,11 @@ class Day18b(DayN):
     async def snd(self, operand):
         if operand.isalpha():
             operand = self[operand]
+        else:
+            print(f"operand: {operand}")
         # print(f"[{self.p}] Sending {operand}, count = {self.send_count + 1}")
-        await self.other_q.put(operand)
         self.send_count += 1
+        await self.other_q.put(operand)
 
 
 def run_part2(inp=None):
@@ -161,7 +164,7 @@ def run_part2(inp=None):
                 print(await t)
         except DeadlockException:
             print(f"Deadlock!")
-            res.set_result(comp2_a.send_count)
+            res.set_result(comp2_b.send_count)
 
     res = asyncio.Future()
     loop.run_until_complete(exc(res))
