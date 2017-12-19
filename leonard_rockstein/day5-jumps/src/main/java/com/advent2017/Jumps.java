@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Jumps {
     
@@ -23,24 +25,20 @@ public class Jumps {
         int i = 0;
         while (keepJumping) {
             try {
-              //  System.out.println("*************");
-              //  System.out.println("Initial Jump list " + Arrays.stream(jumps.jumpList()).mapToObj(String::valueOf).collect(Collectors.joining(",")));
                 int jumpValue = localJump[i];
     
                 int current = i;
                 int nextJump = current + jumpValue;
-             //   System.out.println("Current index " + current + ", " + "Jump size " + jumpValue + ", " + "Jumping from " + current + " to " + nextJump + ", Value at jump: " + localJump[nextJump]);
                 int previous = current;
                 i = nextJump;
-    
-              //  current += 1;
-                localJump[previous] += 1;
+   
+                if ((nextJump - current) >= 3) {
+                    localJump[previous] -= 1;
+                } else {
+                    localJump[previous] += 1;
+                }
+                
                 numberOfJumps++;
-    
-             //   System.out.println("Incremented previous jump value from " + previous + " to " + current);
-             //   System.out.println("Modified Jump list " + Arrays.stream(localJump).mapToObj(String::valueOf).collect(Collectors.joining(",")));
-    
-             //   System.out.println("*************");
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("Jumped out of bounds in " + numberOfJumps);
                 keepJumping = false;
@@ -62,7 +60,7 @@ public class Jumps {
     }
     
     public int[] jumpList(String file) throws IOException {
-        List<Integer> ints = this.readFile("/" + file);//{0, 3, 0, 1, -3};
+        List<Integer> ints = this.readFile("/" + file);
         int[] jumps = new int[ints.size()];
         // groce
         for (int i=0; i<ints.size(); i++) {
