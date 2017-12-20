@@ -14,7 +14,7 @@ import (
 
 const (
 	done   = -1
-	rounds = 50000
+	rounds = 10000
 )
 
 // Particle blah blah
@@ -56,6 +56,7 @@ func (particles Particles) ok() int {
 	return count
 }
 
+// this code is expensive
 func (particles Particles) collide() int {
 	var p1, p2 *Particle
 	destroyed := 0
@@ -66,6 +67,9 @@ func (particles Particles) collide() int {
 
 	for i := 0; i < len(particles); i++ {
 		p1 = &particles[i]
+		if p1.destroyed {
+			continue
+		}
 		for j := i + 1; j < len(particles); j++ {
 			p2 = &particles[j]
 			if p2.destroyed {
@@ -86,8 +90,9 @@ func (particles Particles) collide() int {
 }
 
 func one(particles Particles) Particle {
-	var closest = make(map[int]int)
-	var distances = make([]int, len(particles))
+	closest := make(map[int]int)
+	distances := make([]int, len(particles))
+
 	for idx, p := range particles {
 		distances[idx] = p.distance()
 	}
@@ -108,16 +113,11 @@ func one(particles Particles) Particle {
 				mindis = distances[idx]
 			}
 		}
-		_, ok := closest[minpar]
-		if !ok {
-			closest[minpar] = 1
-		} else {
-			closest[minpar]++
-		}
+		closest[minpar]++
 	}
 
-	var particle int
-	var maxcount = -1
+	particle := -1
+	maxcount := -1
 
 	for p, c := range closest {
 		if c > maxcount {
@@ -164,7 +164,6 @@ func readParticles(fname string) Particles {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	defer input.Close()
 
 	scanner := bufio.NewScanner(input)
@@ -210,3 +209,5 @@ func main() {
 	particles = readParticles(flag.Arg(0))
 	log.Printf("two: particles left after collisions: %d", two(particles))
 }
+
+// eof
