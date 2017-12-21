@@ -183,6 +183,7 @@ def run_simulation(moves):
   cell = ()
   j = 0
   letter_path = ""
+  steps = 0
   while j < moves:
     if cell == ():
       cell = starting_cell
@@ -196,6 +197,8 @@ def run_simulation(moves):
     if d.val(x,y) in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
         letter_path = letter_path + d.val(x,y)
     print("LETTER_PATH", letter_path)
+    steps = steps + 1
+    print("STEPS:", steps)
     cell = next_cell
     j = j + 1
 
