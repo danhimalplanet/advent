@@ -2,23 +2,20 @@
 
 import sys
 
-TURNS = {
-    ".": "left",
-    "W": "same",
-    "#": "right",
-    "F": "reverse"
+TURNS = {".": "left",
+         "W": "same",
+         "#": "right",
+         "F": "reverse"
 }
 
-CHANGE1 = {
-    "#": ".",
-    ".": "#"
+CHANGE1 = {"#": ".",
+           ".": "#"
 }
 
-CHANGE2 = {
-    ".": "W",
-    "W": "#",
-    "#": "F",
-    "F": "."
+CHANGE2 = {".": "W",
+           "W": "#",
+           "#": "F",
+           "F": "."
 }
 
 MOVES = {
@@ -49,87 +46,33 @@ MOVES = {
 }
 
 
-def move(r, c, direction, turn):
-    newdir = MOVES[direction][turn]
-
+def move(r, c, newdir):
     if newdir == "up":
-        return r - 1, c, newdir
+        return r - 1, c
     elif newdir == "down":
-        return r + 1, c, newdir
+        return r + 1, c
     elif newdir == "left":
-        return r, c - 1, newdir
+        return r, c - 1
     elif newdir == "right":
-        return r, c + 1, newdir
+        return r, c + 1
 
 
-def printgrid(grid, direction, r, c, more=""):
-    for i in range(len(grid)):
-        row = grid[i][:]
-        if r == i:
-            row[c] = "!"
-        print("".join(row))
-
-    print(direction)
-    print(r, c)
-    if more:
-        print(more)
-
-
-def expand(r, c, grid):
-    if c < 0:
-        c = 0
-        r += 1
-    if r < 0:
-        r = 0
-        c += 1
-    row = ["."] * len(grid[0])
-    grid.insert(0, row[:])
-    grid.append(row[:])
-    for i in range(len(grid)):
-        grid[i].insert(0, ".")
-        grid[i].append(".")
-
-
-    return r, c, grid
-
-
-def one(grid, bursts):
-    r = c = len(grid) / 2
-    infectcount = 0
-    direction = "up"
-
-    while bursts > 0:
-        turn = TURNS[grid[r][c]]
-
-        grid[r][c] = CHANGE1[grid[r][c]]
-        if grid[r][c] == "#":
-            infectcount += 1
-
-        r, c, direction = move(r, c, direction, turn)
-        if r < 0 or r == len(grid) or c < 0 or c == len(grid):
-            r, c, grid = expand(r, c, grid)
-        bursts -= 1
-
-    # printgrid(grid, direction, -1, -1)
-
-    return infectcount
-
-
-def two(t, size, bursts):
+def both(d, size, CHANGE, bursts):
     r = c = size / 2
     infectcount = 0
     direction = "up"
 
     while bursts > 0:
-        turn = TURNS[t[(r, c)]]
+        turn = TURNS[d[(r, c)]]
 
-        t[(r, c)] = CHANGE2[t[(r, c)]]
-        if t[(r, c)] == "#":
+        d[(r, c)] = CHANGE[d[(r, c)]]
+        if d[(r, c)] == "#":
             infectcount += 1
 
-        r, c, direction = move(r, c, direction, turn)
-        if (r, c) not in t:
-            t[(r, c)] = "."
+        direction = MOVES[direction][turn]
+        r, c = move(r, c, direction)
+        if (r, c) not in d:
+            d[(r, c)] = "."
         bursts -= 1
 
     return infectcount
@@ -140,19 +83,14 @@ def main(args):
 
     input = [line.strip() for line in open(sys.argv[1]).readlines()]
 
-    t = {}
+    d = {}
 
-    grid = []
     for r in range(len(input)):
-        row = input[r]
-        cellrow = []
-        for c, cell in enumerate(row):
-            t[(r, c)] = cell
-            cellrow.append(cell)
-        grid.append(cellrow)
+        for c, cell in enumerate(input[r]):
+            d[(r, c)] = cell
 
-    print(one(grid, int(sys.argv[2], 10)))
-    # print(two(t, len(input), int(sys.argv[2], 10)))
+    print(both(d.copy(), len(input), CHANGE1, 10000))
+    print(both(d.copy(), len(input), CHANGE2, 10000000))
 
 
 if __name__ == "__main__":
