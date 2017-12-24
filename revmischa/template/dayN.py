@@ -28,4 +28,5 @@ class DayN(Computer):
         return 0
 
 if __name__ == '__main__':
-    main(DayN)
+    print(DayN.part1_result(debug=False))
+    print(DayN.part2_result(debug=False))

@@ -54,8 +54,13 @@ class Computer(ABC):
         )
         return parsed
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, debug=True, **kwargs):
         super().__init__()
+        self._debug = debug
+
+    def debug(self, msg: str):
+        if self._debug:
+            print(msg)
 
     @abstractmethod
     def run_part1(self):

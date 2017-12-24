@@ -16,6 +16,7 @@ Pattern = List[str]
 Rule = Tuple[Pattern, Pattern]  # (rule in, rule out)
 RuleList = List[Rule]  # list of rules
 
+pattern_cache: Dict[str, str] = {}
 
 class DayN(Computer):
     pwd = PWD
@@ -37,7 +38,6 @@ class DayN(Computer):
         self.size = 3
         self.pattern: Pattern = ['.#.', '..#', '###']
         self.executor = ThreadPoolExecutor(max_workers=100)
-        self.pattern_cache: Dict[str] = {}
 
     @classmethod
     def parse_input(cls, input_str: str) -> RuleList:
@@ -94,12 +94,24 @@ class DayN(Computer):
             rules = self.rules_3
         else:
             raise Exception("you f'd up")
-        apply_partial = partial(self.apply_rules, divisor=divisor, rules=rules)
 
+        def apply_rules(square: Pattern, divisor: int, rules: RuleList):
+            square_str = '\n'.join(square)
+            if square_str in pattern_cache:
+                return pattern_cache[square_str]
+            for rule in rules:
+                rule_in, rule_out = rule
+                if rule_in == square:
+                    pattern_cache[square_str] = rule_out
+                    return rule_out
+            print("no match:")
+            print(square_str)
+            raise Exception("i suck")
+
+        apply_partial = partial(apply_rules, divisor=divisor, rules=rules)
         new_squares: List[Pattern] = []
-        # option I: threaded
+        # option I: threaded, option II: not threaded
         # new_squares = list(self.executor.map(apply_partial, sub_patterns))
-        # option II: not threaded
         for sub_pattern_cols in sub_patterns:
             sub_pattern = apply_partial(sub_pattern_cols)
             new_squares.append(sub_pattern)
@@ -159,21 +171,6 @@ class DayN(Computer):
             new_rows.append(''.join(row))
         return new_rows
 
-    def apply_rules(self, square: Pattern, divisor: int, rules: RuleList):
-        square_str = '\n'.join(square)
-        if square_str in self.pattern_cache:
-            return self.pattern_cache[square_str]
-        for rule in rules:
-            rule_in, rule_out = rule
-            if rule_in == square:
-                self.pattern_cache[square_str] = rule_out
-                return rule_out
-        print("no match:")
-        print(square_str)
-        raise Exception("i suck")
-
-        return square
-
     def run_part1(self):
         # print(self.rules)
         # print(self.pattern)
@@ -190,4 +187,4 @@ class DayN(Computer):
 
 if __name__ == '__main__':
     print(DayN.part1_result(iterations=5))
-    print(DayN.part1_result(iterations=13))
+    print(DayN.part1_result(iterations=18))
