@@ -1,11 +1,11 @@
-set max 2017
+set max 50000000
 set spin 366
 
 set stage {0}
 set current 0
 
 for {set level 1} {$level <= $max} {incr level} {
-
+  
   if {$spin > $level} {
     set remspin [expr {$spin % $level}]
   } else {
@@ -17,8 +17,8 @@ for {set level 1} {$level <= $max} {incr level} {
   } else {
     set inpoint [expr {$current + $remspin}] 
   }
-
+  
   set current [expr {$inpoint + 1}]
   set stage [linsert $stage $current $level]
 }
-puts [lindex $stage [expr {[lsearch $stage 2017] + 1}]]
+puts [lindex $stage [expr {[lsearch $stage 0] + 1}]]

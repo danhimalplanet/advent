@@ -1,0 +1,18 @@
+ To Do
+ =====
+ 7  b - Balance Tree
+
+10  b - Hash the Knot Hash
+
+12  b - How Many Groups
+13 ab - Firewall
+14 ab - Defrag
+15 ab - Generators
+
+17 ab - Spinlock
+18 ab - Assembly Instructions
+
+20 ab - Particles
+21 ab - Fractal Art
+22 ab - Virus
+23 ab - More Assembly Instructions
