@@ -3,7 +3,10 @@ set fp [open "day18.txt" r]
 set stream [read $fp $fsize]
 close $fp
 
+array set notes {a 0 b 0 f 0 i 0 p 0 as 0 bs 0 fs 0 is 0 ps 0}
+
 set stream [split $stream '\n']
+puts "======================"
 for {set x 0} {$x <  [llength $stream]} {incr x} {  
 
   set line [lindex $stream $x]
@@ -11,41 +14,40 @@ for {set x 0} {$x <  [llength $stream]} {incr x} {
   set cmd [lindex $elements 0]
   set target [lindex $elements 1]
   set value [lindex $elements 2]
-  array set notes {}
+  set note [concat [expr {$target}]s]
 
-  if {[info exists notes($target)] == 0} {
-    set notes($target) 0
-  }
-  if {[string match {*[A-Z]*} $value] == 1} {
-    if {[info exists notes($value)] == 0} {
-      set notes($value) 0
-    }
+  if {[regexp {[a-z]+} $value] == 1} {
+    puts "Val: $value"
     set value $notes($value)
+    puts "Val set to $value"
+    #clarify this.
   }
-  puts "For: $target Notes: $notes($target) Value: $value"
-  puts "seed: notes([join {[$target] s} ""]"
-
+  puts "For: $target Notes: $notes($target) Value: $value on level $x"
   switch $cmd {
     snd {
-      set notes([join {[notes($target)] s} ""]) $value
+      puts "send $value to $notes($note) from $note"
+      set notes($note) $value
     }
     set {
       puts "set $target to $value"
       set notes($target) $value
     }
     add {
-      incr notes($target) $value
+      puts "add notes($target) to $value"
+      set notes($target) [expr {$notes($target) + $value}]
     }
     mul {
+      puts "multiplied $value by $notes($target)"
       set notes($target) [expr {$notes($target) * $value}]
-      puts "multiplied $value to $notes($target)"
     }
     mod {
-      set notes($target) [expr {[expr {$notes($target)}] % $value}]
+      puts "mod set notes($target) to [expr {$notes($target) % $value}]"
+      set notes($target) [expr {$notes($target) % $value}]
     }
     rcv {
-      if {$notes([join {[notes($target)] s} ""]) <> 0} {
-        set notes($target) $notes([join {[notes($target)] s} ""])
+      if {$notes($note) != 0} {
+      puts "rcv notes($target) to $notes($note) from $note"
+        set notes($target) $notes($note)
       }
     }
     jgz {
