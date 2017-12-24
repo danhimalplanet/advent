@@ -12,9 +12,9 @@ from pprint import pprint
 class DayN(Computer):
     pwd = PWD
 
-    def __init__(self, structure):
+    def __init__(self, structure, **kwargs):
         """Construct solver with puzzle input."""
-        super().__init__(structure)
+        super().__init__(structure, **kwargs)
         self.input = structure
 
     @classmethod
