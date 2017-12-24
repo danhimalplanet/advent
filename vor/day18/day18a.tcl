@@ -5,41 +5,53 @@ close $fp
 
 set stream [split $stream '\n']
 for {set x 0} {$x <  [llength $stream]} {incr x} {  
-set line [lindex $stream $x]
-  puts $line
+
+  set line [lindex $stream $x]
   set elements [split $line " "]
   set cmd [lindex $elements 0]
   set target [lindex $elements 1]
   set value [lindex $elements 2]
+  array set notes {}
+
+  if {[info exists notes($target)] == 0} {
+    set notes($target) 0
+  }
+  if {[string match {*[A-Z]*} $value] == 1} {
+    if {[info exists notes($value)] == 0} {
+      set notes($value) 0
+    }
+    set value $notes($value)
+  }
+  puts "For: $target Notes: $notes($target) Value: $value"
+  puts "seed: notes([join {[$target] s} ""]"
 
   switch $cmd {
     snd {
-      set xS $value
+      set notes([join {[notes($target)] s} ""]) $value
     }
     set {
-      set $target $value
-      puts $$target
+      puts "set $target to $value"
+      set notes($target) $value
     }
     add {
-      set $target [$$target + $value]
+      incr notes($target) $value
     }
     mul {
-      set $target [$$target * $value]
+      set notes($target) [expr {$notes($target) * $value}]
+      puts "multiplied $value to $notes($target)"
     }
     mod {
-      set $target [$$target & $value]
-      puts mod
+      set notes($target) [expr {[expr {$notes($target)}] % $value}]
     }
     rcv {
-      if {xS <> 0} {
-        set $target $xS
+      if {$notes([join {[notes($target)] s} ""]) <> 0} {
+        set notes($target) $notes([join {[notes($target)] s} ""])
       }
     }
     jgz {
-      if {$$target > 0} {
+      if {$notes($target) > 0} {
         incr x $value
       }
     }
   }
-
 }
