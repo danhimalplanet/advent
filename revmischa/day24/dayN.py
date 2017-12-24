@@ -23,6 +23,8 @@ class DayN(Computer):
         super().__init__(structure, **kwargs)
         self.ports: PortList = structure
         self.best = 0
+        self.longest_bridge: PortList = []
+        self.longest: int = 0
 
     @classmethod
     def parse_input(cls, input_str: str) -> PortList:
@@ -41,6 +43,7 @@ class DayN(Computer):
     def find_best(self, ports: PortList):
         def search(cur_bridge: PortList, available: PortList):
             self.update_best(cur_bridge)
+            self.update_longest(cur_bridge)
             for i in range(len(available)):
                 port = available[i][:]
                 # can we use this port?
@@ -73,16 +76,34 @@ class DayN(Computer):
                 search(new_cur, new_avail)
         search([], self.ports)
 
-    def update_best(self, ports: PortList):
+    def update_longest(self, ports: PortList):
+        length = 0
+        for port in ports:
+            length += 1
+        if length > self.longest:
+            self.longest_bridge = ports[:]
+            self.longest = length
+        if length == self.longest:
+            # length tie
+            if self.port_sum(ports) > self.port_sum(self.longest_bridge):
+                self.longest_bridge = ports[:]
+                self.longest = length
+
+    def port_sum(self, ports: PortList) -> int:
         sum_ = 0
         for port in ports:
             sum_ += sum(port)
+        return sum_
+
+    def update_best(self, ports: PortList):
+        sum_ = self.port_sum(ports)
         if sum_ > self.best:
             self.best = sum_
-            print(f"New best for {ports}: {sum_}")
+            # print(f"New best for {ports}: {sum_}")
 
     def run_part2(self):
-        return 0
+        self.run_part1()
+        return self.port_sum(self.longest_bridge)
 
 
 if __name__ == '__main__':
