@@ -27,7 +27,7 @@ for {set z 10} {$z < ($z + 1)} {incr z} {
     }
   }
   if {$total == 0} {
-  puts "$total at $z"
+  puts $z
     break
   }
 }

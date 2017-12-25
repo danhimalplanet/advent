@@ -4,7 +4,6 @@
 
 10  b - Hash the Knot Hash
 
-13 ab - Firewall
 14 ab - Defrag
 15 ab - Generators
 
