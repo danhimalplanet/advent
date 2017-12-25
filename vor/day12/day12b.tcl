@@ -7,21 +7,30 @@ close $fp
 # loop using that as beginning
 # incr queuecount
 
-set queue {0}
+
 set pipes [split $pipes '\n']
-for {set x 0} {$x < [llength $queue]} {incr x} {
-  set target [lindex $pipes [lindex $queue $x]]
-  set branch [split $target ",>"]
-  set j 0
-  foreach i $branch {
-    if {$j >= 1} {
-      set newnum [string trim $i]
-      if {[lsearch $queue $newnum] == -1} {
-        lappend queue $newnum
+set queuecount 0
+# [llength $pipes]
+for {set x 0} {$x < [llength $pipes]} {incr x} {
+  set line [lindex $pipes $x]
+  if {$line != {d}} {
+    incr queuecount
+    set queue [lindex [split $line " ,<->"] 0]
+    for {set y 0} {$y < [llength $queue]} {incr y} {
+      set target [lindex $pipes [lindex $queue $y]]
+      set branch [split $target ",>"]
+      set j 0
+      foreach i $branch {
+        if {$j >= 1} {
+          set newnum [string trim $i]
+          if {[lsearch $queue $newnum] == -1} {
+            lappend queue $newnum
+          }
+        }
+        incr j
       }
+      lset pipes [lindex $queue $y] d
     }
-    incr j
   }
 }
-puts [lsort $queue]
-puts [llength $queue]
+puts $queuecount
