@@ -1,18 +1,17 @@
-let aoc = require('../lib/aoc.js')
-let spread = aoc.inputfile('./day02.txt').split('\n')
+(function(){
+	let aoc = require('../lib/aoc.js')
+	let spread = aoc.inputfile('./day02.txt').split('\n')
 
-let checksum = 0
-spread.forEach(function(line){
-	console.log('start ========')
-	let elements = line.split(' ').map( Number )
-	let tmin = Math.min.apply(null,elements);
-	console.log(tmin)
-	elements.map(function (a, b) {
-		  	console.log(a, b)
-		if (a % b == 0) {
-		  	console.log('even', a, b)
-//		  	checksum += a / b
-		}
+	let checksum = 0
+	spread.forEach(function(line){
+		let elements = line.split(' ').map( Number ).sort()
+		elements.forEach(function(numA){
+			elements.forEach(function(numB){
+				if (numA != numB && numA > numB && numA % numB == 0) {
+					checksum += (numA / numB)
+				}
+			})
+		})
 	});
-});
-// console.log(checksum)
+	console.log(checksum)
+})()
