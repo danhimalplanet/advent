@@ -10,3 +10,7 @@ new: $(TARGET)
 	mv $(TARGET)/test_dayN.py $(TARGET)/test_day$(DAY).py
 $(TARGET):
 	cp -r aoc/template $(TARGET)
+
+
+part1:
+	pytest -s -ff $(TARGET)/test_day$(DAY).py

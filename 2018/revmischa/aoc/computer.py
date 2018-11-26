@@ -1,7 +1,4 @@
-"""Common routines for solution computers.
-
-Used day7 onwards.
-"""
+"""Common routines for solution computers."""
 from abc import ABC, abstractmethod  # abstract base class
 import re
 import os
@@ -17,7 +14,7 @@ log = logging.getLogger(__name__)
 class Computer(ABC):
     """Base computer class.
 
-    Handles parsing puzzle imports and defines protocol for computing part I and part II answers.
+    Handles parsing puzzle imports and defines interface for computing part I and part II answers.
     """
     pwd = None
 
