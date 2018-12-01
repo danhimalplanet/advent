@@ -7,9 +7,8 @@ let freqlist = [],
 
 while(!found) {
   changelist
-    .map(change => parseInt(change))
     .some(change => {
-      frequency += change;  
+      frequency += parseInt(change);  
       found = freqlist.includes(frequency);
       freqlist.push(frequency);
       return found;
