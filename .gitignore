@@ -1,1 +1,3 @@
 kid-icarus/node_modules
+*iml
+target/
