@@ -13,13 +13,7 @@ object Run {
     partOne()
   }
 
-  def partOne(): Unit = {
-
-    var result: Int = 0
-    result = data.sum
-
-    println(s"part 1 result: ${result}")
-  }
+  def partOne(): Unit = println(s"part 1 result: ${data.sum}")
 
   def loadData(): Array[Int] =
     Source.fromResource("input").getLines.map(_.replace("+","").toInt).toArray
