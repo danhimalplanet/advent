@@ -1,1 +1,4 @@
 kid-icarus/node_modules
+*~
+*.py[co]
+__pycache__
