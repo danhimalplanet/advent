@@ -2,3 +2,6 @@ kid-icarus/node_modules
 *~
 *.py[co]
 __pycache__
+*iml
+target/
+.idea/
