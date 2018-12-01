@@ -9,17 +9,15 @@ async function getFrequency () {
 
 const getAnswer = async () => {
   const data = await getFrequency();
-  const frequencyTable = {
-    0: true
-  }
+  const frequencies = new Set();
   let accumulator = 0;
   while(true) {
-    for (let e of data.split('\n')) {
-      const num = parseInt(e)
+    for (let el of data.split('\n')) {
+      const num = parseInt(el)
       if (isNaN(num)) continue;
-      accumulator += num
-      if (frequencyTable[accumulator]) return accumulator
-      frequencyTable[accumulator] = true
+      accumulator += num;
+      if (frequencies.has(accumulator)) return accumulator
+      frequencies.add(accumulator)
     }
   }
 }
