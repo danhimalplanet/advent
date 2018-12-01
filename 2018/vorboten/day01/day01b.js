@@ -1,20 +1,18 @@
 const aoc = require('../lib/aoc.js');
-const changelist = inputfile('./day01.txt');
-let freqlist = [];
-let newfreq, nextfreq = 0;
-var found = false;
+const changelist = inputfile('./day01.txt',true);
+
+let freqlist = [],
+    found = false,
+    frequency = 0;
+
 while(!found) {
-nextfreq =  changelist
-  .split('\n')
-  .map(change => parseInt(change))
-  .reduce((frequency, change) => {
-    newfreq = frequency + change;  
-    if(freqlist.includes(newfreq)) { 
-      console.log(newfreq);
-      freqlist = [];
-      found = true;
-    }
-    freqlist.push(newfreq);
-    return newfreq;
-  },nextfreq);
+  changelist
+    .map(change => parseInt(change))
+    .some(change => {
+      frequency += change;  
+      found = freqlist.includes(frequency);
+      freqlist.push(frequency);
+      return found;
+    });
 }
+console.log(frequency);
