@@ -4,6 +4,10 @@ import scala.io.Source
 
 object Run {
   def main(args: Array[String]): Unit = {
+    partOne()
+  }
+
+  def partOne(): Unit = {
     val lines: Iterator[String] = Source.fromResource("input").getLines
     var result: Int = 0
 
@@ -11,7 +15,7 @@ object Run {
       val next = lines.next.replace("+", "")
       result += next.toInt
     }
-    println(s"result: ${result}")
+    println(s"part 1 result: ${result}")
   }
 }
 
