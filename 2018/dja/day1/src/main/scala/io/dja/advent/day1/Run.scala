@@ -1,21 +1,28 @@
 package io.dja.advent.day1
 
+import java.util
+
 import scala.io.Source
 
 object Run {
+
+  var seen: util.HashMap[Int, Int] = new util.HashMap[Int, Int]
+  val data = loadData()
+
   def main(args: Array[String]): Unit = {
     partOne()
   }
 
   def partOne(): Unit = {
-    val lines: Iterator[String] = Source.fromResource("input").getLines
-    var result: Int = 0
 
-    while (lines.hasNext) {
-      val next = lines.next.replace("+", "")
-      result += next.toInt
-    }
+    var result: Int = 0
+    result = data.sum
+
     println(s"part 1 result: ${result}")
   }
+
+  def loadData(): Array[Int] =
+    Source.fromResource("input").getLines.map(_.replace("+","").toInt).toArray
+
 }
 
