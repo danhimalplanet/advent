@@ -111,3 +111,115 @@ testPart02
 	self
 		assert: (day01 part2: #(7 7 -2 -7 -4))
 		equals: 14! !
+
+
+Object subclass: #Day02
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Self-Advent'!
+
+!Day02 methodsFor: 'as yet unclassified' stamp: 'fn 12/3/2018 00:09'!
+frequencies: word 
+	| d |
+	d := Dictionary new.
+	word
+		do: [:each | d
+				at: each
+				ifPresent: [:v | d at: each put: v + 1]
+				ifAbsentPut: [1]].
+	^ d! !
+
+!Day02 methodsFor: 'as yet unclassified' stamp: 'fn 12/3/2018 00:38'!
+part1: wordsArray 
+	| words two three |
+	wordsArray isNil
+		ifTrue: [words := self readInput]
+		ifFalse: [words := wordsArray copy].
+	two := 0.
+	three := 0.
+	words
+		do: [:word | 
+			| vals |
+			vals := (self frequencies: word) values.
+			(vals includes: 2)
+				ifTrue: [two := two + 1].
+			(vals includes: 3)
+				ifTrue: [three := three + 1]].
+	^ two * three! !
+
+!Day02 methodsFor: 'as yet unclassified' stamp: 'fn 12/3/2018 01:08'!
+part2: wordsArray 
+	| words diff retstr |
+	wordsArray isNil
+		ifTrue: [words := self readInput]
+		ifFalse: [words := wordsArray copy].
+	diff := Array new: (words at: 1) size.
+	retstr := ''.
+	1
+		to: words size - 1
+		do: [:i | i + 1
+				to: words size - 1
+				do: [:j | 
+					| left right |
+					left := words at: i.
+					right := words at: j.
+					1
+						to: left size
+						do: [:idx | diff at: idx put: (left at: idx)
+									= (right at: idx)].
+					(diff occurrencesOf: false)
+							= 1
+						ifTrue: [1
+								to: diff size
+								do: [:idx | (diff at: idx)
+										ifTrue: [retstr := retstr
+														, (left at: idx).]].
+												^retstr]]].
+! !
+
+!Day02 methodsFor: 'as yet unclassified' stamp: 'fn 12/2/2018 23:42'!
+readInput
+	| words |
+	words := (FileStream fileNamed: '/tmp/input.txt') contentsOfEntireFile splitBy: String lf.
+^words
+! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+Day02 class
+	instanceVariableNames: ''!
+
+!Day02 class methodsFor: 'as yet unclassified' stamp: 'fn 12/2/2018 23:43'!
+part1
+
+^Day02 new part1: nil.! !
+
+!Day02 class methodsFor: 'as yet unclassified' stamp: 'fn 12/2/2018 23:43'!
+part2
+
+^Day02 new part2: nil.! !
+
+
+TestCase subclass: #Day02Test
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Self-Advent'!
+
+!Day02Test methodsFor: 'as yet unclassified' stamp: 'fn 12/3/2018 00:16'!
+testPart01
+	| day02 |
+	day02 := Day02 new.
+	self
+		assert: (day02 part1: #('abcdef' 'bababc' 'abbcde' 'abcccd' 'aabcdd' 'abcdee' 'ababab'))
+		equals: 12.
+	! !
+
+!Day02Test methodsFor: 'as yet unclassified' stamp: 'fn 12/3/2018 00:17'!
+testPart02
+	| day02 |
+	day02 := Day02 new.
+	self
+		assert: (day02 part2: #('abcde' 'fghij' 'klmno' 'pqrst' 'fguij' 'axcye' 'wvxyz'))
+		equals: 'fgij'.! !
