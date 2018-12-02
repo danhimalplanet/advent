@@ -1,6 +1,5 @@
 package io.dja.advent.day1
 
-import java.util
 
 import scala.collection.mutable.HashSet
 import scala.io.Source
@@ -8,11 +7,12 @@ import scala.util.control.Breaks._
 
 object Run {
 
+  // credit to winkie for figuring out the speed woes
   var seen: HashSet[Int] = new HashSet[Int]
   var result: Int = _
 
   def main(args: Array[String]): Unit = {
-    val data = loadData("")//args(0))
+    val data = loadData(args(0))
     partOne(data)
     partTwo(data)
   }
@@ -44,7 +44,7 @@ object Run {
   }
 
   def loadData(file: String): List[String] =
-    Source.fromFile("/home/devin/projects/advent/2018/dja/day1/src/main/resources/input.txt")
+    Source.fromFile(file)
       .getLines.toList
 
 }
