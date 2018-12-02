@@ -7,5 +7,5 @@ sub MAIN(Str $f) {
 	my @l = $f.IO.lines;
 	say "Part 1: {part1(@l)}";
 
-	say "Part 2: {part2(@l)}";
+	say "Part 2: {part2(@l, 1)}";
 }
