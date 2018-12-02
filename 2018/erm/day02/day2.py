@@ -3,11 +3,11 @@
 from typing import Union
 
 
-def has_n(line: str, n: int) -> bool:
-    return 1 if [i for i in line if line.count(i) == n] else 0
+def has_count(line: str, n: int) -> bool:
+    return [i for i in line if line.count(i) == n]
 
 
-def compare_lines(line_one: str, line_two: str) -> Union[str, None]:
+def compare_result(line_one: str, line_two: str) -> Union[str, None]:
     seen_missing = False
     result = []
     for s_one, s_two in zip(line_one, line_two):
@@ -21,6 +21,15 @@ def compare_lines(line_one: str, line_two: str) -> Union[str, None]:
     return "".join(result)
 
 
+def compare_lines(input_data: list) -> str:
+    for line in input_data:
+        for _line in input_data:
+            if _line != line:
+                result_b = compare_result(_line, line)
+                if result_b:
+                    return result_b
+
+
 def main() -> None:
     two_count = 0
     three_count = 0
@@ -29,20 +38,16 @@ def main() -> None:
         input_data = [s.strip() for s in f.readlines()]
 
     for line in input_data:
-        two_count += has_n(line, 2)
-        three_count += has_n(line, 3)
+        if has_count(line, 2):
+            two_count += 1
+        if has_count(line, 3):
+            three_count += 1
 
     result_a = two_count * three_count
     result_b = None
 
-    for line in input_data:
-        for _line in input_data:
-            if _line != line:
-                result_b = compare_lines(_line, line)
-                if result_b:
-                    break
-        if result_b:
-            break
+    while result_b is None:
+        result_b = compare_lines(input_data)
 
     print(f"Part A: {result_a}")
     print(f"Part B: {result_b}")
