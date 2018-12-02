@@ -2,10 +2,7 @@ unit module Day02;
 
 # Categorised based on repetitions (use Unique to avoid classifying something multiple times) and
 # simply return the number with 2 and 3 repeats, :v required to not return undefined values
-sub part1 is export {
-	my $c = categorize { bag(.comb).values.unique }, @_;
-	[*] $c{2}:v.elems, $c{3}:v.elems;
-}
+sub part1(@w) is export {[*] @w.categorize({bag(.comb).values.unique}){2,3}}
 
 sub part2(@w) is export {
 	# Split the incoming strings into characters, then zip them so they become a list where each
