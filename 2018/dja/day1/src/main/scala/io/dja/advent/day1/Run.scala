@@ -26,14 +26,10 @@ object Run {
     seen += initial
     var innerLoopIterations:Int = 0
     while (found == false) {
-      println("INSIDE WHILE LOOP")
        breakable {
          for (d <- data) {
-           println(s"INSIDE FOR ${initial}")
            initial += d.toInt
-           println(s"INITIAL AFTER ADD ${initial}")
            if (seen.contains(initial)) {
-             println(s"SEEN ${seen}")
              result = initial
              found = true
              break
@@ -42,7 +38,6 @@ object Run {
            innerLoopIterations += 1
          }
        }
-      println(s"INNER LOOP ITERATIONS ${innerLoopIterations}")
     }
     println(s"part 2 result: ${result}")
 
