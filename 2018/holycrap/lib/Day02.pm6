@@ -5,11 +5,11 @@ unit module Day02;
 sub part1(@w) is export {[*] @w.categorize({bag(.comb).values.unique}){2,3}}
 
 # Compare each word against each other word, returning as soon as the number of equal letters is the
-# inverse of our target number. Zip is used to replace different letters with a 0 length list which
-# is elided by join.
+# inverse of our target number.
 sub part2(@w, $t) is export {
 	for @w.combinations(2) -> [$a, $b] {
-		return zip($a.comb, $b.comb, :with(-> $a, $b { $a eq $b ?? $a !! |() })).join
-			if ([+] $a.comb Zeq $b.comb) == $a.chars - $t
+		if ([+] $a.comb Zeq $b.comb) == $a.chars - $t {
+			return zip($a.comb, $b.comb, :with({$^a if $^a eq $^b})).join
+		}
 	}
 }
