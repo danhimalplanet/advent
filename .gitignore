@@ -5,4 +5,4 @@ __pycache__
 *iml
 target/
 .idea/
-.DS_Store
+.DS_Store*.iml
