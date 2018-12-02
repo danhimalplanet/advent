@@ -3,7 +3,7 @@
 import itertools
 
 
-def main():
+def main() -> None:
     with open("data.txt", "r") as f:
         input_data = [int(s) for s in f.readlines()]
 
