@@ -21,20 +21,20 @@ object Run {
 
   def partTwo(data: List[String]): Unit = {
     var seen: ListBuffer[Int] = new ListBuffer[Int]
-    var initial: Int = 0
+    var frequency: Int = 0
     var found: Boolean = false
-    seen += initial
+    seen += frequency
     var innerLoopIterations:Int = 0
-    while (found == false) {
+    while (!found) {
        breakable {
-         for (d <- data) {
-           initial += d.toInt
-           if (seen.contains(initial)) {
-             result = initial
+         for (frequencyChange <- data) {
+           frequency += frequencyChange.toInt
+           if (seen.contains(frequency)) {
+             result = frequency
              found = true
              break
            }
-           seen += initial
+           seen += frequency
            innerLoopIterations += 1
          }
        }
