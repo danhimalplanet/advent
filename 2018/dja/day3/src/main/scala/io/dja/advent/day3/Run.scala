@@ -3,6 +3,7 @@ package io.dja.advent.day3
 import java.util
 
 import scala.io.Source
+import scala.util.control.Breaks._
 
 object Run extends App {
 
@@ -52,11 +53,33 @@ object Run extends App {
         }
       }
     }
-    iterator.remove()
   }
+
   var overlapping: Int = claimGrid.flatten.count(_ == "X")
+  var wholeClaimId: Int = 0
+  val iterator2 = parsedClaimCoordinatesAndDimensions.entrySet().iterator()
+  while(iterator2.hasNext) {
+    val pair = iterator2.next()
+    val claimNumber = pair.getKey
+    val claimData = pair.getValue
+    val claimXStart = claimData(0)
+    val claimYStart = claimData(1)
+    val claimXDim = claimData(2)
+    val claimYDim = claimData(3)
+    breakable {
+      for (i <- claimXStart until claimXStart + claimXDim) {
+        for (j <- claimYStart until claimYStart + claimYDim) {
+          if (claimGrid(i)(j) == "X") {
+            break
+          }
+        }
+      }
+      wholeClaimId = claimNumber.toInt
+    }
+  }
 
   println(s"Part 1: ${overlapping}")
+  println(s"Part 2: ${wholeClaimId}")
 
   def loadData(path: String): List[String] = {
     Source.fromFile(path)
