@@ -2,7 +2,6 @@ package io.dja.advent.day3
 
 import java.util
 
-import scala.collection.mutable.ListBuffer
 import scala.io.Source
 
 object Run extends App {
@@ -57,10 +56,7 @@ object Run extends App {
   }
   var overlapping: Int = claimGrid.flatten.count(_ == "X")
 
-
-
   println(s"Part 1: ${overlapping}")
-
 
   def loadData(path: String): List[String] = {
     Source.fromFile(path)
