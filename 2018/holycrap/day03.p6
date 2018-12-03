@@ -4,8 +4,8 @@ use lib $*PROGRAM.parent.child('lib');
 use Day03;
 
 sub MAIN(Str $f) {
-	my @l = $f.IO.lines;
-	say "Part 1: {part1(@l)}";
+	my $c = Canvas.new(load => $f.IO.lines);
+	say "Part 1: {$c.part1}";
 
-	say "Part 2: {part2(@l)}";
+	say "Part 2: {$c.part2}";
 }

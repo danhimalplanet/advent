@@ -1,68 +1,67 @@
 unit module Day03;
 
-class Rectangle {
-    has Int $.x;
-    has Int $.y;
-    has Int $.w;
-    has Int $.h;
-    has int $.depth;
-}
-
 grammar Rect {
 	token TOP { "#" <num> " @ " <num> "," <num> ": " <num> "x" <num> }
 	token num { \d+ }
 }
 
+class Rectangle {
+	has Int $.id;
+	has Int $.x;
+	has Int $.y;
+	has Int $.w;
+	has Int $.h;
+}
+
 class RectReify {
 	method TOP ($/) {
 		make Rectangle.new(
-			x => $/<num>[1].Int,
-			y => $/<num>[2].Int,
-			w => $/<num>[3].Int,
-			h => $/<num>[4].Int,
+			id => $/<num>[0].Int,
+			x  => $/<num>[1].Int,
+			y  => $/<num>[2].Int,
+			w  => $/<num>[3].Int,
+			h  => $/<num>[4].Int,
 		)
 	}
 }
 
-sub import(@l) {
-	# Parse the rectangles from the input file format
-	my @rects = @l.map: {Rect.parse($_, actions => RectReify).made};
 
-	# Create simple spatial indexes along X and Y to avoid a grid structure
-	my %x;
-	my %y;
-	for @rects.pairs -> $r {
-		($r.value.y ..^ $r.value.y+$r.value.h).map({ %y{$_}.push($r.key) });
-		($r.value.x ..^ $r.value.x+$r.value.w).map({ %x{$_}.push($r.key) });
+class Canvas is export {
+	has Rectangle %.rects{Int};
+	has %.x;
+	has %.y;
+
+	submethod BUILD(:@load) {
+		# Load every input line and transform into a real object using grammar/actions above
+		my @r = @load.map: {Rect.parse($_, actions => RectReify).made};
+
+		# Bind the real object by index. Sink required as these are side effects
+		sink @r.map: {%!rects{.id} := $_};
+
+		# Categorise each rectangle into the X and Y space it takes up, forming sets of their ids
+		%!x = @r.categorize({.x ..^ .x+.w}).pairs.race.map: {.key => set(|.value».id)};
+		%!y = @r.categorize({.y ..^ .y+.h}).pairs.race.map: {.key => set(|.value».id)};
 	}
-
-	return %x, %y;
-}
-
-sub part1(@l) is export {
-	my ($x, $y) = import @l;
 
 	# Iterate all combinations of keys in X and Y, summing any where the intersecting set of
 	# rectangle IDs has > 1 elem, i.e more than one rectangle occupies this space on x+y axes
-	[+] ($x.keys X $y.keys).map: -> [$a, $b] {
-		(set(|$x{$a}) ∩ set(|$y{$b})).elems > 1 ?? 1 !! 0;
-	}
-}
-
-sub part2(@l) is export {
-	my ($x, $y) = import @l;
-
-	# All rectangle IDs that have a non-overlapping position
-	my $i = set ($x.keys X $y.keys).map: -> [$a, $b] {
-		my $i = set(|$x{$a}) ∩ set(|$y{$b});
-		|$i.keys if $i.elems == 1;
+	method part1 {
+		[+] (%!x.keys X %!y.keys).race.map: -> [$a, $b] { (%!x{$a} ∩ %!y{$b}).elems > 1 }
 	}
 
-	# All rectangle IDs that do overlap
-	my $o = set ($x.keys X $y.keys).map: -> [$a, $b] {
-		my $i = set(|$x{$a}) ∩ set(|$y{$b});
-		|$i.keys if $i.elems > 1;
-	}
+	# Iterate all combinations again but keep track of two sets. Those IDs which appear on their
+	# own, and those IDs which appear with others.
+	method part2 {
+		my ($s, $m) = set(), set(); # Single and Multi appearances
 
-	1 + ($i (-) $o).keys[0]; # Assume there'll be only one so pick the first
+		(%!x.keys X %!y.keys).race.map: -> [$a, $b] {
+			given %!x{$a} ∩ %!y{$b} {
+				when .elems == 1 { $s = $s ∪ $_ }
+				when .elems  > 1 { $m = $m ∪ $_ }
+			}
+		}
+
+		# Subtract those seen with others from those seen on their own
+		$s (-) $m;
+	}
 }
