@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from functools import reduce
 from itertools import cycle
-from operator import add
 from os.path import join
 
 
 def part1(input):
-    return reduce(add, input)
+    return sum(input)
 
 
 def part2(input):
