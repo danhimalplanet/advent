@@ -38,7 +38,6 @@ object Run extends App {
   }
 
   val iterator = parsedClaimCoordinatesAndDimensions.entrySet().iterator()
-  var overlapping: Int = 0
   while(iterator.hasNext) {
     val pair = iterator.next()
     val claimNumber = pair.getKey
@@ -56,9 +55,13 @@ object Run extends App {
     }
     iterator.remove()
   }
+  var overlapping: Int = claimGrid.flatten.count(_ == "X")
 
-  overlapping = claimGrid.flatten.count(_ == "X")
+
+
   println(s"Part 1: ${overlapping}")
+
+
   def loadData(path: String): List[String] = {
     Source.fromFile(path)
       .getLines().toList
