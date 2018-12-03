@@ -26,10 +26,9 @@ object Run extends App {
         claimGrid(i)(j) = claimNumber
       }
     }
-
-    print(claimGrid.map(_.mkString).mkString("\n"))
   }
 
+  print(claimGrid.map(_.mkString).mkString("\n"))
   def loadData(path: String): List[String] = {
     Source.fromFile(path)
       .getLines().toList
