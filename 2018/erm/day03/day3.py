@@ -1,5 +1,5 @@
-import itertools
 from dataclasses import dataclass
+from collections import Counter
 
 
 @dataclass
@@ -23,8 +23,9 @@ class Claim:
         return self.width * self.height
 
     def __iter__(self) -> None:
-        for y, x in itertools.product(self.pos_height_range, self.pos_width_range):
-            yield y, x
+        for y in self.pos_height_range:
+            for x in self.pos_width_range:
+                yield y, x
 
 
 def main() -> None:
@@ -45,26 +46,15 @@ def main() -> None:
             )
             claims.append(claim)
 
-    grid_size = 2000
-    grid_range = range(grid_size)
-    grid = [[0] * grid_size for _ in grid_range]
     result_a = 0
 
-    for claim in claims:
-        for y, x in claim:
-            grid[y][x] += 1
-
-    for y, x in itertools.product(grid_range, grid_range):
-        if grid[y][x] > 1:
-            result_a += 1
+    pos_counter = Counter([pos for claim in claims for pos in claim])
+    result_a = sum([1 for i in pos_counter.values() if int(i) > 1])
 
     result_b = None
 
     for claim in claims:
-        i = 0
-        for y, x in claim:
-            i += grid[y][x]
-        if i == claim.size:
+        if all(pos_counter[pos] < 2 for pos in claim):
             result_b = claim.id
             break
 
