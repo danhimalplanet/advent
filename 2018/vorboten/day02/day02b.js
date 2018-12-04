@@ -9,27 +9,19 @@ const result =  boxes.forEach(box =>{
   }
 })
 
+let boxlist2 = boxlist;
 for (let box of boxlist) {
-  for(let box2 of boxlist) {
-    let diffcount = 0;
-    let commonality = '';
-    if (box2 != box) {
-      for(i = 0;i < box.length; i++) {
-        if(box.charAt(i) != box2.charAt(i) ) {
-          if(diffcount < 2) { 
-            diffcount++
-          } else {
-            break;
-          }
+  boxlist2.delete(box);
+  for(let box2 of boxlist2) {
+    for(i = 0;i < box.length; i++) {
+      if(box.charAt(i) != box2.charAt(i) ) {
+        if(box.substring(i + 1, box.length) === box2.substring(i + 1, box2.length)) {
+          console.log(box.substring(0, i) + box.substring(i + 1, box.length));
+          break;
         } else {
-          commonality += box.charAt(i);
-        }
+          i = box.length;
+        }      
       }
     }
-    if(diffcount == 1) {
-      console.log(`${commonality}`)
-      return;
-    }
-
   }
 }
