@@ -1,9 +1,8 @@
 import io
 
 def should_destroy(chars):
-    alpha = 'abcdefghijklmnopqrstuvwxyz'
-    for i in alpha:
-        if chars == i + i.upper() or chars == i.upper() + i:
+    if chars[0].upper() == chars[1].upper():
+        if (chars[0].isupper() and chars[1].islower()) or (chars[0].islower() and chars[1].isupper()):
             return True
     return False
 
