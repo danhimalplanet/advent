@@ -6,13 +6,13 @@ sub part1($s) is export {
 	my @c = $s.comb.list;
 	my @t;
 
-	for @c.keys -> $i {
-		(@t.tail and (@t.tail.fc eq @c[$i].fc) and (
-			(@t.tail eq @t.tail.uc  and  @c[$i] eq @c[$i].lc) or
-			(@t.tail eq @t.tail.lc  and  @c[$i] eq @c[$i].uc)))
-				?? @t.pop !! @t.push(@c[$i])
+	for @c.values -> $c {
+		(@t.tail and (@t.tail.fc eq $c.fc) and (
+			(@t.tail eq @t.tail.uc  and  $c eq $c.lc) or
+			(@t.tail eq @t.tail.lc  and  $c eq $c.uc)))
+				?? @t.pop !! @t.push($c)
 	}
-	return @t.join.chars;
+	@t.join.chars;
 }
 
 # Run part 1 with all instances of each particular reacting pair removed, find the shortest
