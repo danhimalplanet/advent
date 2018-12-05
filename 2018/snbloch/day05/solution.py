@@ -31,7 +31,7 @@ def part1():
             polymer.__delitem__(position)
             polymer.__delitem__(position)
             change_detected = True
-            position += 1
+            position -= 1
         else:
             position += 1
     print 'Part 1: Polymer has',len(polymer),'units remaining.'
@@ -76,7 +76,7 @@ def part2():
                 updated_polymer.__delitem__(position)
                 updated_polymer.__delitem__(position)
                 change_detected = True
-                position += 1
+                position -= 1
             else:
                 position += 1
     print 'Part 2: Polymer minimum length is',min_length
