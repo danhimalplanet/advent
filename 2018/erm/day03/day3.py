@@ -19,7 +19,7 @@ class Claim:
         return range(self.offset_x, self.offset_x + self.width)
 
     @property
-    def size(self):
+    def size(self) -> int:
         return self.width * self.height
 
     def __iter__(self) -> None:
