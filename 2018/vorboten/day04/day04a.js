@@ -1,40 +1,77 @@
 const aoc = require('../lib/aoc.js');
-const timestamps = inputfile('./day04.txt', true);
-let guardId, 
-    match, 
+const timestamps = inputfile('./day04test.txt', true);
+let guardid,
     asleep, 
-    awake, 
-    guards = [];
+    awake,
+    worstguard,
+    worsttime = 0;
+var guards = [];
 
 stamps = timestamps
-  .map(a => Date.parse(a.substring(1,17)) + a.substring(18,a.length))
+  .map(a => Date.parse(a.substring(1,17)) + ' ' + a.substring(12,14) + ' ' + a.substring(15,17) + a.substring(18,a.length))
   .sort((a,b) => parseInt(a.substring(0,15)) - parseInt(b.substring(0,15)))
   .forEach(a => {
-    switch(a.substring(16,21)) {
+    awake = 0;
+    switch(a.substring(22,27)) {
       case 'Guard': // Guard on duty
-        dataPattern = /\#([\d]+)/g;
-        [match, guardId] = dataPattern.exec(a) || [];
         asleep = 0;
-        awake = 0;
-        break;
-      case 'falls': // Guard falls asleep
-        asleep = a.substring(0,15)
-        awake = 0;
-        break;
-      case 'wakes': // Guard wakes up
-        awake = a.substring(0,15)
-        if(guardId in guards) {
-          let sleepytime = (parseInt(awake) - parseInt(asleep))/ (1000 * 60)
-          guards[guardId] = guards[guardId] + sleepytime;
-        } else {
-          let sleepytime = (parseInt(awake) - parseInt(asleep))/ (1000 * 60)
-          guards[guardId] = sleepytime;
+
+        dataPattern = /00\s[\d]+\s[\d]+[\s\w]+[\#]?([\d]?[\d]?[\d]?[\d]?[\d]?)/g;
+        [match, guard] = dataPattern.exec(a) || [];
+        guardid = guard.valueOf()
+        console.log('------------')
+        console.log('guard: ' + guardid)
+    
+        if (guards.indexOf(guardid) == -1) {
+          guards[guardid] = [];
+          guards[guardid].sleeptime = 0;
         }
-        asleep = 0;
+        break;
+      
+      case 'falls': // Guard falls asleep
+        dataPattern = /00\s([\d]+)\s([\d]+)[\s\w]/g;
+        [match, hour, minute] = dataPattern.exec(a) || [];
+        asleep = parseInt(minute);
+        break;
+
+      case 'wakes': // Guard wakes up
+        dataPattern = /00\s([\d]+)\s([\d]+)[\s\w]/g;
+        [match, hour, minute] = dataPattern.exec(a) || [];
+        awake = parseInt(minute);
+
+        guards[guardid].sleeptime = ((awake - asleep) + guards[guardid].sleeptime);
+
+        if(worstguard) {
+        //  console.log('worstguard: ' + worstguard, guards[worstguard].sleeptime)
+          worstguard = (guards[guardid].sleeptime > guards[worstguard].sleeptime)? guardid: worstguard;
+        } else {
+          worstguard = guardid;
+        //  console.log('worstguard:: ' + worstguard, guards[worstguard].sleeptime)
+        }
+        // console.log('asleep: ' + asleep )
+        // console.log('awake: ' + awake )
+        // console.log('sleeptime ' + guards[guardid].sleeptime)
+        // console.log('diff ' + (awake - asleep))
+        // console.log('total: ' + guards[guardid].sleeptime)
+        for (i = asleep; i <= awake; i++) {
+          //console.log(guardid, guards[guardid])
+          if (typeof guards[guardid][i] == "undefined") {
+            guards[guardid][i] = 0;
+          }
+          console.log('g: ' + guardid, i, guards[guardid][i])
+          guards[guardid][i] += 1;
+//          console.log(i, guards[guardid][i])
+          if(worsttime) {
+         //   console.log('worsttime: ' + worsttime)
+            worsttime = (guards[guardid][i] > guards[worstguard][worsttime])? i: worsttime;
+          } else {
+            worsttime = i;
+          //  console.log('worsttime:: ' + worsttime)
+          }
+        }
         break;
     }
   })  
-//  console.log(guards[393])
-console.log(guards)
-// let dataPattern = /\[([\d]+)-([\d]+)-([\d]+) ([\d]+):([\d]+)\]([\s\w\d\#]+)/g;
-// let [match, year, month, day, hour, minute, copy] = dataPattern.exec(a) || [];
+ //console.log(worstguard , worsttime)
+//console.log(guards)
+console.log(guards[10][24])
