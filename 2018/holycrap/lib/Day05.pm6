@@ -7,9 +7,10 @@ sub part1($s) is export {
 	my @t;
 
 	for @c.keys -> $i {
-		((@t.tail and @t.tail eq @t.tail.uc and @c[$i] eq @c[$i].lc and @t.tail.fc eq @c[$i].fc) or
-		 (@t.tail and @t.tail eq @t.tail.lc and @c[$i] eq @c[$i].uc and @t.tail.fc eq @c[$i].fc))
-			?? @t.pop !! @t.push(@c[$i])
+		(@t.tail and (@t.tail.fc eq @c[$i].fc) and (
+			(@t.tail eq @t.tail.uc  and  @c[$i] eq @c[$i].lc) or
+			(@t.tail eq @t.tail.lc  and  @c[$i] eq @c[$i].uc)))
+				?? @t.pop !! @t.push(@c[$i])
 	}
 	return @t.join.chars;
 }
