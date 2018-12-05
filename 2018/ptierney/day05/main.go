@@ -88,7 +88,17 @@ func copyList(l *list.List) *list.List {
 	return newList
 }
 
-var letterLength map[rune]int
+var letterLength map[rune]chan int
+
+func computePolymer(polymer *list.List, letter rune, length chan int) {
+	polymerCopy := copyList(polymer)
+
+	removeLetterFromPolymer(polymerCopy, letter)
+
+	compactPolymer(polymerCopy)
+
+	length <- polymerCopy.Len()
+}
 
 func main() {
 	inputSequence := getInput()
@@ -105,32 +115,28 @@ func main() {
 
 	// Part 2
 
-	letterLength = make(map[rune]int)
+	letterLength = make(map[rune]chan int)
 
 	for i := 97; i < 123; i++ {
-		letterLength[rune(i)] = 0
+		letterLength[rune(i)] = make(chan int)
 	}
 
 	for letter, _ := range letterLength {
-		polymerCopy := copyList(polymer)
-
-		removeLetterFromPolymer(polymerCopy, letter)
-
-		compactPolymer(polymerCopy)
-
-		letterLength[letter] = polymerCopy.Len()
+		go computePolymer(polymer, letter, letterLength[letter])
 	}
 
 	shortestLen := -1
 
 	for _, length := range letterLength {
+		var lengthValue int = <-length
+
 		if shortestLen < 0 {
-			shortestLen = length
+			shortestLen = lengthValue
 			continue
 		}
 
-		if length < shortestLen {
-			shortestLen = length
+		if lengthValue < shortestLen {
+			shortestLen = lengthValue
 		}
 	}
 
