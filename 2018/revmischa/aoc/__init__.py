@@ -1,12 +1,13 @@
 from logging import getLogger
 import datetime
 import boto3
+import os
 
 
 getLogger('flake8').propagate = False
 
 # get current day
-current_day = datetime.datetime.now().day
+current_day = int(os.getenv("AOC_DAY", datetime.datetime.now().day))
 
 
 # boto3 session
