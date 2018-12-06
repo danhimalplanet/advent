@@ -69,18 +69,18 @@ def part2():
             pos_x = int(line.strip().split(', ')[0])
             pos_y = int(line.strip().split(', ')[1])
             coordinates.append((pos_x, pos_y))
-        cur_y = 0
-        while cur_y < rows:
-            cur_x = 0
-            while cur_x < columns:
-                total_distance = 0
-                for i in coordinates:
-                    manhattan = abs(cur_y - i[1]) + abs(cur_x - i[0])
-                    total_distance += manhattan
-                if total_distance < target:
-                    grid[cur_y][cur_x] = 'win'
-                cur_x += 1
-            cur_y += 1
+    cur_y = 0
+    while cur_y < rows:
+        cur_x = 0
+        while cur_x < columns:
+            total_distance = 0
+            for i in coordinates:
+                manhattan = abs(cur_y - i[1]) + abs(cur_x - i[0])
+                total_distance += manhattan
+            if total_distance < target:
+                grid[cur_y][cur_x] = 'win'
+            cur_x += 1
+        cur_y += 1
     cur_y = 0
     while cur_y < rows:
         cur_x = 0
