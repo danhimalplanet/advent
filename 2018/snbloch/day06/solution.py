@@ -61,7 +61,6 @@ def part2():
     rows = 1000
     columns = 1000
     target = 10000
-    grid = np.full((rows, columns), None)
     coordinates = []
     area = 0
     with open('input.txt', 'r') as inputfile:
