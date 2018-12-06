@@ -78,14 +78,6 @@ def part2():
                 manhattan = abs(cur_y - i[1]) + abs(cur_x - i[0])
                 total_distance += manhattan
             if total_distance < target:
-                grid[cur_y][cur_x] = 'win'
-            cur_x += 1
-        cur_y += 1
-    cur_y = 0
-    while cur_y < rows:
-        cur_x = 0
-        while cur_x < columns:
-            if grid[cur_y][cur_x] == 'win':
                 area += 1
             cur_x += 1
         cur_y += 1
