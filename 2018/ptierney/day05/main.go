@@ -121,8 +121,8 @@ func main() {
 		letterLength[rune(i)] = make(chan int)
 	}
 
-	for letter, _ := range letterLength {
-		go computePolymer(polymer, letter, letterLength[letter])
+	for letter, lengthChan := range letterLength {
+		go computePolymer(polymer, letter, lengthChan)
 	}
 
 	shortestLen := -1
