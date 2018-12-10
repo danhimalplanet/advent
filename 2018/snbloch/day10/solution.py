@@ -22,7 +22,7 @@ def part1():
         rows = set()
         for i in positions:
             rows.add(i[1])
-        if len(rows) / 8 == 1:
+        if len(rows) == 10:
             finished = True
     grid = np.full((1000, 1000), '.')
     for i in positions:
@@ -53,7 +53,7 @@ def part2():
         rows = set()
         for i in positions:
             rows.add(i[1])
-        if len(rows) / 8 == 1:
+        if len(rows) == 10:
             finished = True
     print 'Part 2: message took',ticks,'seconds to appear'
 
