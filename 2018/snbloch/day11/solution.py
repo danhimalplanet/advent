@@ -18,11 +18,11 @@ def compute_power(x, y):
 def part1():
     width = 300
     height = 300
-    grid = np.zeros((width, height))
-    cur_y = 0
-    while cur_y < height:
-        cur_x = 0
-        while cur_x < width:
+    grid = np.zeros((width + 1, height + 1))
+    cur_y = 1
+    while cur_y <= height:
+        cur_x = 1
+        while cur_x <= width:
             grid[cur_y][cur_x] = compute_power(cur_x, cur_y)
             cur_x += 1
         cur_y += 1
@@ -30,9 +30,9 @@ def part1():
     max_x = None
     max_y = None
     cur_y = 0
-    while cur_y < height - 2:
+    while cur_y <= height - 2:
         cur_x = 0
-        while cur_x < width - 2:
+        while cur_x <= width - 2:
             cur_subgrid = grid[cur_y][cur_x] + grid[cur_y][cur_x + 1] + grid[cur_y][cur_x + 2] + grid[cur_y + 1][cur_x] + grid[cur_y + 1][cur_x + 1] + grid[cur_y + 1][cur_x + 2] + grid[cur_y + 2][cur_x] + grid[cur_y + 2][cur_x + 1] + grid[cur_y + 2][cur_x + 2]
             if max_subgrid is None:
                 max_subgrid = cur_subgrid
@@ -49,11 +49,11 @@ def part1():
 def part2():
     width = 300
     height = 300
-    grid = np.zeros((width, height))
-    cur_y = 0
-    while cur_y < height:
-        cur_x = 0
-        while cur_x < width:
+    grid = np.zeros((width + 1, height + 1))
+    cur_y = 1
+    while cur_y <= height:
+        cur_x = 1
+        while cur_x <= width:
             grid[cur_y][cur_x] = compute_power(cur_x, cur_y)
             cur_x += 1
         cur_y += 1
@@ -61,12 +61,12 @@ def part2():
     max_x = None
     max_y = None
     max_size = None
-    size = 0
-    while size < width:
-        cur_y = 0
-        while cur_y < height - size:
-            cur_x = 0
-            while cur_x < width - size:
+    size = 1
+    while size <= width:
+        cur_y = 1
+        while cur_y <= height - size:
+            cur_x = 1
+            while cur_x <= width - size:
                 cur_subgrid = int(np.sum(grid[cur_y:cur_y + size, cur_x:cur_x + size]))
                 if max_subgrid is None:
                     max_subgrid = cur_subgrid
