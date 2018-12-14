@@ -16,11 +16,11 @@ stamps = timestamps
       case 'Guard': // Guard on duty
         asleep = 0;
 
-        dataPattern = /00\s[\d]+\s[\d]+[\s\w]+[\#]?([\d]?[\d]?[\d]?[\d]?[\d]?)/g;
-        [match, guard] = dataPattern.exec(a) || [];
-        guardid = guard.valueOf()
-        console.log('------------')
-        console.log('guard: ' + guardid)
+        dataPattern = /00\s[\d]+\s[\d]+[\s\w]+[\#]?([\d]*)/g;
+        [match, guardid] = dataPattern.exec(a) || [];
+        console.log('------------');
+        console.log(typeof guardid);
+        console.log('guard: ' + guardid);
     
         if (guards.indexOf(guardid) == -1) {
           guards[guardid] = [];
