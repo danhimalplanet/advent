@@ -280,5 +280,43 @@ def part1():
         cur_y += 1
     print 'Part 1: total resource count is',tree_count * lumberyard_count
 
+def part2():
+    grid = np.full((height, width), None)
+    with open('input.txt', 'r') as inputfile:
+        cur_y = 0
+        for line in inputfile:
+            cur_x = 0
+            for i in line.strip():
+                grid[cur_y][cur_x] = i
+                cur_x += 1
+            cur_y += 1
+    generation_count = 0
+    print 'Part 2:'
+    while generation_count < 1000:
+        grid = transform(grid)
+        generation_count += 1
+        tree_count = 0
+        lumberyard_count = 0
+        cur_y = 0
+        while cur_y < height:
+            cur_x = 0
+            while cur_x < width:
+                if grid[cur_y][cur_x] == tree:
+                    tree_count += 1
+                elif grid[cur_y][cur_x] == lumberyard:
+                    lumberyard_count += 1
+                cur_x += 1
+            cur_y += 1
+        print 'Generation:',generation_count,'Resource count:',tree_count * lumberyard_count
+    '''
+    pattern starts after generation 566
+    cycle of 28
+
+    999999434 cycles of pattern to make 1000000000 total generations
+    999999434 % 28 == 14
+
+    15th element of cycle (14 after zeroth) is 219919
+    '''
 if __name__ == '__main__':
     part1()
+    part2()
