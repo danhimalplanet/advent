@@ -99,10 +99,10 @@ class Day18(Computer):
 
     def run_part1(self, iterations=10):
         start = time()
-        seen = [self.input]
+        seen = []
         for i in range(iterations):
-            # one step
-            self.input = self.iter()
+            next_m = self.iter()
+            self.input = next_m
 
             # print timing
             if i % 100 == 0 and i != 0:
@@ -114,23 +114,21 @@ class Day18(Computer):
             # compare to old
             for j in range(len(seen)):
                 seen_mat = seen[j]
-                if np.array_equal(self.input, seen_mat):  # we've seen this before
+                if np.array_equal(next_m, seen_mat):  # we've seen this before
                     cycle_len = i - j
                     print(f"Cycle detected after {i} iterations, cycle len = {cycle_len}")
 
-                    # extrapolate cycle to iterations
-                    mat_cycle = cycle(seen[j:j+cycle_len])  # repeat slice infinitely
-
                     # how many times to continue cycle
-                    cycle_idx = iterations - i  # 1000000000 - number of times already iterated
-
-                    # pick out cycle_idx element from mat_cycle
-                    mat = next(islice(mat_cycle, cycle_idx, cycle_idx + 1))
+                    gen = iterations - j - 1
+                    cycle_idx = gen % cycle_len
+                    mat_cycle = seen[j:]
+                    mat = mat_cycle[cycle_idx]
 
                     # output answer (part2)
                     return self.count_answer(mat)
 
-            seen.append(self.input)
+            # one step
+            seen.append(next_m)
 
         # part 1
         return self.count_answer(self.input)
