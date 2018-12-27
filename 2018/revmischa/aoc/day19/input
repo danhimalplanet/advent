@@ -1,0 +1,37 @@
+#ip 2
+addi 2 16 2  ip=0
+seti 1 1 1
+seti 1 4 3
+mulr 1 3 5  setr 4 3 5  if 3 < 4 - loop restarts here <.
+eqrr 5 4 5  check if 5 == 10551275                     |
+addr 5 2 2  if 5 == 4, skip next line                  |
+addi 2 1 2  skip next line,  |   this line is skipped if 5 == 4
+addr 1 0 0  inc 0  <----------                  |      |
+addi 3 1 3  inc 3                         <-----|      |
+gtrr 3 4 5  if 3 > 4 - skip over  seti 2 4 2           |
+addr 2 5 2  if 3 < 4, do next line    |                |
+seti 2 4 2  skipped if 3 > 4  <-^     |  restart loop -|
+addi 1 1 1  reached if 3 > 4    <------   inc 1
+gtrr 1 4 5  reg1 = 10551276  -  end condition
+addr 5 2 2  if 1 > 4  -  end condition      |
+seti 1 0 2  reset to ip=1+1; skip at end    |
+mulr 2 2 2  halt          <------------------
+addi 4 2 4
+mulr 4 4 4
+mulr 2 4 4
+muli 4 11 4
+addi 5 1 5
+mulr 5 2 5
+addi 5 17 5
+addr 4 5 4
+addr 2 0 2
+seti 0 9 2
+setr 2 3 5
+mulr 5 2 5
+addr 2 5 5
+mulr 2 5 5
+muli 5 14 5
+mulr 5 2 5
+addr 4 5 4
+seti 0 9 0
+seti 0 6 2  jump back to start

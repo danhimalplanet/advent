@@ -4,7 +4,7 @@ DAY=$(shell python -c "import aoc; print(aoc.current_day)")
 TARGET="aoc/day$(DAY)"
 
 run:
-	ipython $(TARGET)/computer.py
+	python3.7 $(TARGET)/computer.py
 
 # make new day
 new: $(TARGET)
