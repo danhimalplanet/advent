@@ -1,4 +1,4 @@
-var totalFuel = 0
+var totalFuel = 0;
 
 function fuelFromMass(mass){
     mass /= 3;
@@ -9,7 +9,7 @@ function fuelFromMass(mass){
 
 require('fs').readFileSync('input.txt', 'utf-8').split(/\r?\n/).forEach(function(line){
     var fuel = fuelFromMass(parseInt(line));
-    fuelToAdd = fuelFromMass(parseInt(line));
+    var fuelToAdd = fuelFromMass(parseInt(line));
     while (fuelToAdd > 0) {
       if (fuelFromMass(fuelToAdd) > 0){
         fuel += fuelFromMass(fuelToAdd);
@@ -22,4 +22,4 @@ require('fs').readFileSync('input.txt', 'utf-8').split(/\r?\n/).forEach(function
     totalFuel += fuel;
   });
 
-console.log(totalFuel)
+console.log(totalFuel);
