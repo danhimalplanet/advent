@@ -11,10 +11,9 @@ defmodule Day02 do
   def part2(intcode \\ input()) do
     me = self()
 
-    for noun <- 0..100 do
-      for verb <- 0..100 do
-        spawn(fn -> send(me, {part1(intcode, noun, verb), noun * 100 + verb}) end)
-      end
+    for noun <- 0..100,
+        verb <- 0..100 do
+      spawn(fn -> send(me, {part1(intcode, noun, verb), noun * 100 + verb}) end)
     end
 
     receive do
