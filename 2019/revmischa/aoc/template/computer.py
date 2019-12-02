@@ -5,23 +5,17 @@ PROJ_ROOT = os.path.abspath(os.path.join(PWD, '..', '..'))
 if PROJ_ROOT not in sys.path:
     sys.path.insert(0, PROJ_ROOT)
 
-from aoc.computer import Computer, main
-from pprint import pprint
+from aoc.computer import Computer
+from pprint import pprint  # noqa: F401
 
 
 class DayN(Computer):
-    pwd = PWD
+    pwd: str = PWD
 
     def __init__(self, structure, **kwargs):
         """Construct solver with puzzle input."""
         super().__init__(structure, **kwargs)
         self.input = structure
-
-    @classmethod
-    def lambda_handler(cls, event):
-        """Entry point for distributed computations."""
-        arg = event['arg']
-        return f"got event {arg}"
 
     @classmethod
     def parse_input(cls, input_str: str):

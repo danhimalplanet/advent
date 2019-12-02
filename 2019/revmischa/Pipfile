@@ -7,6 +7,8 @@ verify_ssl = true
 mypy = "*"
 flake8 = "*"
 pytest-xdist = "*"
+black = "*"
+boto3-stubs = "*"
 
 [packages]
 numpy = "*"
@@ -14,3 +16,6 @@ boto3 = "*"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true
