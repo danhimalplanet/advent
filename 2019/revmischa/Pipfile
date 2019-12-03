@@ -9,10 +9,16 @@ flake8 = "*"
 pytest-xdist = "*"
 black = "*"
 boto3-stubs = "*"
+importmagic = "*"
+epc = "*"
 
 [packages]
 numpy = "*"
 boto3 = "*"
+shapely = "*"
+sqlalchemy = "*"
+geoalchemy2 = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"
