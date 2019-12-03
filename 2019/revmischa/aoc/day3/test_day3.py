@@ -13,4 +13,4 @@ def test_part_1():
     assert Day3.part1_result(test_input) == 159, "failed day3 part I"
 
 def test_part_2():
-    assert Day3.part2_result(test_input) == 0, "failed day3 part II"
+    assert Day3.part2_result(test_input) == 610, "failed day3 part II"
