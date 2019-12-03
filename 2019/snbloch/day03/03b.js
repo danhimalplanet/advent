@@ -7,6 +7,7 @@ wire2 = wire2.split(',');
 
 function plotPath(wire) {
     var path = [];
+    var steps = 0;
     var x = 0;
     var y = 0;
     for (i = 0; i < wire.length; i++) {
@@ -46,8 +47,8 @@ function main() {
     var intersection = _.intersection(wire1path, wire2path);
     var closest;
     _.forEach(intersection, function(element, i) {
-        if (closest == undefined || manhattan(element) < closest) {
-            closest = manhattan(element);
+        if (closest == undefined || (wire1path.indexOf(element) + wire2path.indexOf(element) + 2 < closest)) {
+            closest = wire1path.indexOf(element) + wire2path.indexOf(element) + 2;
         }
     });
     console.log(closest);
