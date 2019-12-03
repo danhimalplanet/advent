@@ -11,32 +11,7 @@ if PROJ_ROOT not in sys.path:
 from aoc.computer import Computer
 from pprint import pprint  # noqa: F401
 from shapely.geometry import Point, LineString
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from geoalchemy2 import Geometry, func
-from geoalchemy2.shape import to_shape
-from sqlalchemy import Column, Integer
-from sqlalchemy.orm import sessionmaker
-
-
-engine = create_engine("postgresql:///aoc", echo=False)
-conn = engine.connect()
-Base = declarative_base()
-Session = sessionmaker(bind=engine)
-session = Session()
-
-
-class Wire(Base):
-    __tablename__ = "wire"
-    id = Column(Integer, primary_key=True)
-    geom = Column(Geometry("LINESTRING"))
-
-
-Wire.__table__.drop(engine)
-Wire.__table__.create(engine)
-
-def prg(geom):
-    print(session.scalar(func.ST_AsText(geom)))
+from shapely.ops import split
 
 class Day3(Computer):
     pwd: str = PWD
@@ -53,27 +28,23 @@ class Day3(Computer):
         return w1s.split(","), w2s.split(",")
 
     def run_part1(self):
-        w1 = self.make_geom(self.w1)
-        w2 = self.make_geom(self.w2)
-        prg(w1.geom)
-        prg(w2.geom)
-        intersection = session.scalar((w1.geom.ST_Intersection(w2.geom)))
-        intshape = to_shape(intersection)
-        prg(intersection)
+        g1 = self.make_geom(self.w1)
+        g2 = self.make_geom(self.w2)
+        intshape = g1.intersection(g2)
         min_dist = 1000000000
         for point in intshape:
-            print(point)
+            if point.x == 0 and point.y == 0:
+                continue
+            # get distance at intersection
             dist = self.manhattan_dist(point.x, point.y)
             if dist < min_dist:
                 min_dist = dist
-        print(min_dist)
         return min_dist
-
 
     def make_geom(self, ws: List[str]):
         x = 0
         y = 0
-        points = []
+        points = [Point(0, 0)]
         for wd in ws:
             # get coords of next wire segment
             direction, magnitude = wd[0], int(wd[1:])
@@ -88,17 +59,27 @@ class Day3(Computer):
             points.append(Point(x, y))
 
         geom = LineString(points)
-        wire = Wire(geom=str(geom))
-        session.add(wire)
-        session.commit()
-        return wire
+        return geom
 
     def manhattan_dist(self, x: int, y: int):
         # distance from origin
         return abs(x) + abs(y)
 
     def run_part2(self):
-        return 0
+        g1 = self.make_geom(self.w1)
+        g2 = self.make_geom(self.w2)
+        intshape = g1.intersection(g2)
+        min_steps = 1000000000
+        for point in intshape:
+            if point.x == 0 and point.y == 0:
+                continue
+            # split the lines at the intersection and take the lengths
+            s1 = split(g1, point)
+            s2 = split(g2, point)
+            steps = s1[0].length + s2[0].length
+            if steps < min_steps:
+                min_steps = steps
+        return min_steps
 
 
 if __name__ == "__main__":
