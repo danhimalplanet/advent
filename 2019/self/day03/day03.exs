@@ -43,9 +43,9 @@ defmodule Day03 do
   end
 
   @doc """
-  Take a direction and number if steps in the format {"X", steps} and
+  Take a direction and number of steps in the format {"X", steps} and
   a position and number of steps taken so far in the format {x, y,
-  sofarsteps} and return the ending position (with steps) along with a
+  sofarsteps}.  Return the ending position (with steps) along with a
   list of steps taken.
 
   ## Examples
