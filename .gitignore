@@ -5,5 +5,6 @@ __pycache__
 target/
 .idea/
 .DS_Store*.iml
+.DS_Store
 node_modules/
 */snbloch/*/test.txt
