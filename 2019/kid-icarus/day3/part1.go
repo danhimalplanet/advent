@@ -158,12 +158,12 @@ func main () {
 	if err != nil {
 		panic(err)
 	}
-	derp := string(raw)
-	dat := strings.Fields(derp)
+	inputStr := string(raw)
+	inputLines := strings.Fields(inputStr)
 	lines := make([][]string, 2)
-	for i, line := range dat {
-		seggies := strings.Split(line, ",")
-		lines[i] = seggies
+	for i, line := range inputLines {
+		segments := strings.Split(line, ",")
+		lines[i] = segments
 	}
 	wires := make([][]Segment, 2)
 	for i, wire := range lines {
