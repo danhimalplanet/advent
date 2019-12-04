@@ -18,6 +18,7 @@ class Computer(ABC):
     """
 
     pwd: Optional[str] = None
+    input = None
 
     @classmethod
     def part1_result(cls, *args, **kwargs):
@@ -37,6 +38,8 @@ class Computer(ABC):
 
         If input_ is not specified, read from input.
         """
+        if cls.input:
+             return cls(cls.input, *args, **kwargs)
         if not input_:
             input_path = os.path.join(cls.pwd, "input") if cls.pwd else "input"
             with open(input_path, "r") as input_file:
