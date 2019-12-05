@@ -12,6 +12,7 @@ boto3-stubs = "*"
 importmagic = "*"
 epc = "*"
 ipdb = "*"
+ipython = "*"
 
 [packages]
 numpy = "*"
