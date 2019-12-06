@@ -6,14 +6,13 @@ pytest day5/
 import pytest
 from aoc.day5 import Day5
 
-test_input = """
-1
-2
-3
-"""
-
-def test_part_1():
-    assert Day5.part1_result(test_input) == 0, "failed day5 part I"
 
 def test_part_2():
-    assert Day5.part2_result(test_input) == 0, "failed day5 part II"
+    assert Day5.part2_result('3,9,8,9,10,9,4,9,99,-1,8', inputs=[8]) == [1]
+    assert Day5.part2_result('3,9,8,9,10,9,4,9,99,-1,8', inputs=[9]) == [0]
+    assert Day5.part2_result('3,9,7,9,10,9,4,9,99,-1,8', inputs=[7]) == [1]
+    assert Day5.part2_result('3,9,7,9,10,9,4,9,99,-1,8', inputs=[9]) == [0]
+    assert Day5.part2_result('3,3,1108,-1,8,3,4,3,99', inputs=[8]) == [1]
+    assert Day5.part2_result('3,3,1108,-1,8,3,4,3,99', inputs=[7]) == [0]
+    assert Day5.part2_result('3,3,1107,-1,8,3,4,3,99', inputs=[7]) == [1]
+    assert Day5.part2_result('3,3,1107,-1,8,3,4,3,99', inputs=[9]) == [0]
