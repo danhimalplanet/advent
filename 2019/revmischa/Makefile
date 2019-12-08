@@ -1,6 +1,6 @@
 .PHONY: new run test
 
-DAY=$(shell python -c "import aoc; print(aoc.current_day)")
+DAY?=$(shell python -c "import aoc; print(aoc.current_day)")
 TARGET="aoc/day$(DAY)"
 
 run:

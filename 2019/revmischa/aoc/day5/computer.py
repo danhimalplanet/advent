@@ -84,15 +84,6 @@ class Day5(Computer):
                 for idx in range(operand_count):
                     val = mem[self.pc + 1 + idx]
                     mode = int(params[operand_count - 1 - idx])  # 0 or 1, pos or imm
-                    # print(
-                    #     "idx",
-                    #     idx,
-                    #     "chars",
-                    #     chars,
-                    #     mem[self.pc + 1 + idx],
-                    #     "operand count",
-                    #     operand_count,
-                    # )
                     if (
                         mode == IMMEDIATE or (idx == operand_count - 1 and op not in (JNZ, JZ))
                     ):  # final op (dest) should be address
