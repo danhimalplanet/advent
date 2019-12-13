@@ -104,9 +104,9 @@ class Computer(ABC):
         super().__init__()
         self._debug = debug
 
-    def debug(self, msg: str):
+    def debug(self, *args):
         if self._debug:
-            print(msg)
+            print(*args)
 
     @abstractmethod
     def run_part1(self):
