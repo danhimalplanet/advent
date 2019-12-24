@@ -96,8 +96,8 @@ class Day10(Computer):
 
                 # check if other point is on the line
                 ox, oy = other
-                if ox == 4 and oy == 1 and ass == (4,2) and target==(4,0):
-                    import ipdb; ipdb.set_trace()
+                # if ox == 4 and oy == 1 and ass == (4,2) and target==(4,0):
+                    # import ipdb; ipdb.set_trace()
                 yval = ox * slope + offset
                 if not yval.is_integer():
                     continue
