@@ -106,6 +106,7 @@ class Day9(Computer):
                     params = f"0{params}"  # left-pad with 0s
                 # gather operands
                 operands = []
+                indirect = True
                 for idx in range(operand_count):
                     val = mem[self.pc + 1 + idx]
                     mode = int(
@@ -119,10 +120,11 @@ class Day9(Computer):
                         idx + 1 == operand_count and op in DIRECT_MEM_OPS
                     ):
                         operands.append(val)
+                        indirect = False
                     else:
                         operands.append(mem[val])
                 # self.debug("chars", chars, "op", op, "params", params, "mem", mem[pc+1:pc+1+operand_count], "operands", operands)
-                self.eval(mem, int(op), operands)
+                self.eval(mem, int(op), operands, indirect=indirect)
 
             if op == EXIT:
                 self.halted = True
@@ -135,7 +137,7 @@ class Day9(Computer):
 
         return self.outputs
 
-    def eval(self, mem, op, o):
+    def eval(self, mem, op, o, indirect=True):
         self.debug("eval", op, o)
         operand_count = OPERAND_COUNT[op]
 
@@ -151,7 +153,7 @@ class Day9(Computer):
             mem[o[0]] = val
         elif op == OUT:  # 4
             # output
-            val = o[0]
+            val = mem[o[0]] if indirect else o[0]
             # self.debug("output", val, mem[val])
             self.outputs.append(val)
         elif op == JNZ:  # 5

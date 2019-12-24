@@ -22,29 +22,32 @@ class Day10(Computer):
         """Construct solver with puzzle input."""
         super().__init__(structure, **kwargs)
         self.input = structure
-        mat, ass = structure
+        mat, ass, height = structure
         self.mat = mat
         self.ass = ass
+        self.height = height
 
     @classmethod
     def parse_input(cls, input_str: str):
         y = 0
         mat = []
         ass = []
-        for line in input_str.split("\n"):
+        rows = input_str.split("\n")
+        height = len(rows)
+        for line in rows:
             row = []
             x = 0
             for c in line:
                 if c == "#":
                     row.append("#")
-                    ass.append((x, 4-y))
+                    ass.append((x, height - y))
                 else:
                     row.append(" ")
                 x += 1
             y += 1
             mat.append(row)
         # mat.reverse()
-        return (mat, ass)
+        return (mat, ass, height)
 
     def run_part1(self):
         # print(self.mat)
@@ -55,7 +58,7 @@ class Day10(Computer):
         for ass in self.ass:
             visible = self.calc_visible(ass)
             x, y = ass
-            self.mat[4-y][x] = visible
+            self.mat[self.height - y][x] = visible
             if visible > best:
                 best = visible
 
@@ -63,11 +66,11 @@ class Day10(Computer):
         return best
 
     def print_mat(self):
-        print('')
+        print("")
         for row in self.mat:
             for col in row:
-                print(col, end='')
-            print('')
+                print(col, end="")
+            print("")
 
     def calc_visible(self, ass: Asteroid) -> int:
         ax, ay = ass
@@ -96,64 +99,48 @@ class Day10(Computer):
 
                 # check if other point is on the line
                 ox, oy = other
-                # if ox == 4 and oy == 1 and ass == (4,2) and target==(4,0):
-                    # import ipdb; ipdb.set_trace()
+                # if we plug the other's X value into our line equation we should get a whole number for Y
                 yval = ox * slope + offset
-                if not yval.is_integer():
+                if not round(yval, 12).is_integer():  # almost...
                     continue
-                yval = int(yval)
-                if oy == yval:
-                    # on the line
+                yval = int(round(yval))
+                if ox == ax == bx:
+                    # same X coords
+                    if ay < by and (oy > ay and oy < by):
+                        # print(f"(x) {other} is between {ass} and {target}")
+                        intersected = True
+                        break
+                    if ay > by and (oy < ay and oy > by):
+                        # print(f"(x) {other} is between {ass} and {target}")
+                        intersected = True
+                        break
+                elif ay == by == oy:
+                    # same Y coords
+                    # print(ass, target, other)
+                    if ax < bx and (ox > ax and ox < bx):
+                        intersected = True
+                        break
+                    if ax > bx and (ox < ax and ox > bx):
+                        intersected = True
+                        break
+                elif oy == yval:
+                    # satisfies our line equation, thus is on the line between ass and target
                     # does other live between ass and target?
-                    if bx >= ax and (ox > bx or ox < ax):
+                    if bx >= ax and (ox >= bx or ox <= ax):
                         continue
-                    elif bx <= ax and (ox < bx or ox > ax):
+                    elif bx <= ax and (ox <= bx or ox >= ax):
                         continue
-                    if by >= ay and (oy > by or oy < ay):
+                    if by >= ay and (oy >= by or oy <= ay):
                         continue
-                    elif by <= ay and (oy < by or oy > ay):
+                    elif by <= ay and (oy <= by or oy >= ay):
                         continue
                     # print(f"{other} is between {ass} and {target}")
                     intersected = True
                     break
-                elif ox == ax == bx:
-                    # same x coords
-                    if ay < by and (oy > ay and oy < by):
-                        # print(f"(x) {other} is between {ass} and {target}")
-                        intersected = True
-                    if ay > by and (oy < ay and oy > by):
-                        # print(f"(x) {other} is between {ass} and {target}")
-                        intersected = True
 
             if not intersected:
                 # print(f"{ass} can see {target}")
                 visible_count += 1
-
-            # continue
-
-            # # step through each integer x and y values between ass and other
-            # xstep = 1 if bx > ax else -1
-            # ystep = 1 if by > ay else -1
-            # for x in range(ax, bx, xstep):
-            #     y = slope * float(x) + offset
-            #     print(x, y)
-            #     if not y.is_integer():
-            #         continue
-            #     # does an asteroid exist at this crossing point?
-            #     found = self.find_asteroid(int(x), int(y))
-            #     if found and not (found[0] == bx and found[1] == by):
-            #         continue
-            #     # print("found intersection", found)
-            # for y in range(ay, by, ystep):
-            #     x = (y - offset) / slope
-            #     print(x, y)
-            #     if not x.is_integer():
-            #         continue
-            #     found = self.find_asteroid(int(x), int(y))
-            #     if found and not (found[0] == bx and found[1] == by):
-            #         continue
-            #     # print("found intersection", found)
-            # visible_count += 1
 
         return visible_count
 
