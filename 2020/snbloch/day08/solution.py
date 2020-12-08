@@ -1,14 +1,15 @@
 from collections import defaultdict
 
+instructions = []
+for line in open('input.txt', 'r'):
+    line = line.strip().split()
+    instructions.append((line[0], line[1]))
+
 class intcodeComputer:
-    def __init__(self, filename):
-        self.filename = filename
-        self.instructions = []
-        for line in open(filename, 'r'):
-            line = line.strip().split()
-            self.instructions.append((line[0], line[1]))
-        self.position = 0
+    def __init__(self, instructions):
+        self.instructions = instructions
         self.accumulator = 0
+        self.position = 0
     def execute_instruction(self):
         if self.instructions[self.position][0] == 'nop':
             self.position += 1
@@ -17,16 +18,9 @@ class intcodeComputer:
             self.position += 1
         elif self.instructions[self.position][0] == 'jmp':
             self.position += int(self.instructions[self.position][1])
-    def reset(self):
-        self.instructions = []
-        for line in open(self.filename, 'r'):
-            line = line.strip().split()
-            self.instructions.append((line[0], line[1]))
-        self.position = 0
-        self.accumulator = 0
 
 def part1():
-    computer = intcodeComputer('input.txt')
+    computer = intcodeComputer(instructions)
     seen = set()
     while computer.position not in seen:
         seen.add(computer.position)
@@ -34,22 +28,20 @@ def part1():
     print(computer.accumulator)
 
 def part2():
-    computer = intcodeComputer('input.txt')
-    counter = 0
-    for i in computer.instructions:
-        if i[0] == 'nop':
-            computer.instructions[counter] = ('jmp', computer.instructions[counter][1])
-        elif i[0] == 'jmp':
-            computer.instructions[counter] = ('nop', computer.instructions[counter][1])
+    for i in range(len(instructions)):
+        computer = intcodeComputer(instructions.copy())
+        if computer.instructions[i][0] == 'nop':
+            computer.instructions[i] = ('jmp', computer.instructions[i][1])
+        elif computer.instructions[i][0] == 'jmp':
+            computer.instructions[i] = ('nop', computer.instructions[i][1])
         seen = defaultdict(int)
         while computer.position < len(computer.instructions):
             seen[computer.position] += 1
             computer.execute_instruction()
             if max(seen.values()) > 1:
-                computer.reset()
-                counter += 1
                 break
-    print(computer.accumulator)
+        if computer.position >= len(computer.instructions):
+            print(computer.accumulator)
 
 if __name__ == '__main__':
     part1()
