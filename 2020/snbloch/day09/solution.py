@@ -10,7 +10,7 @@ position = 25
 def part1():
     global position, preamble_length
     finished = False
-    while finished != True:
+    while finished == False:
         combos = list(combinations(values[position - preamble_length:position], 2))
         twosum = [sum(list(i)) for i in combos]
         if values[position] not in twosum:
