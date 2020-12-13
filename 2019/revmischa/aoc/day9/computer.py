@@ -92,7 +92,7 @@ class Day9(Computer):
                     if op not in DIRECT_MEM_OPS:
                         val = mem[val]
                     operands.append(val)
-                self.eval(mem, op, operands)
+                self.eval(mem, op, operands, indirect=False)
             else:
                 # immediate or relative immediate
                 chars = str(op)
@@ -116,6 +116,7 @@ class Day9(Computer):
                     if mode == RELATIVE:
                         self.debug("rel", val, self.base, operands, "pc", self.pc)
                         operands.append(mem[val + self.base])
+                        indirect = False
                     elif mode == IMMEDIATE or (
                         idx + 1 == operand_count and op in DIRECT_MEM_OPS
                     ):
@@ -123,6 +124,7 @@ class Day9(Computer):
                         indirect = False
                     else:
                         operands.append(mem[val])
+                        indirect = True
                 # self.debug("chars", chars, "op", op, "params", params, "mem", mem[pc+1:pc+1+operand_count], "operands", operands)
                 self.eval(mem, int(op), operands, indirect=indirect)
 
