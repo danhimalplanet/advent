@@ -48,7 +48,7 @@ fn get_bus_depart_time_from(t: Time, bus_id: BusId) -> Time {
         // current time is a departure
         t
     } else {
-        t / bus_id * bus_id + bus_id
+        get_bus_depart_time_next(t, bus_id)
     };
 }
 
