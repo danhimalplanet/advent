@@ -1,14 +1,12 @@
 use std::collections::HashMap;
 use std::fs;
 
-fn part_one() {
-    let mut sum: u64 = 0;
-    let input = fs::read_to_string("input.txt").unwrap();
-    input.split('\n').for_each(|line| {
-        let mut num = String::new();
+fn part_one(input: String) -> u64 {
+    input.split('\n').fold(0, |acc, line| {
         if line.is_empty() {
-            return;
+            return acc;
         }
+        let mut num = String::new();
         let mut numeric_chars = line.chars().filter(|c| c.is_numeric());
         let first = numeric_chars.next().unwrap();
         num.push(first);
@@ -18,9 +16,8 @@ fn part_one() {
         };
         num.push(last);
         let num: u64 = num.parse().unwrap();
-        sum += num;
-    });
-    println!("Sum: {}", sum);
+        acc + num
+    })
 }
 
 fn part_two(input: String) -> u64 {
@@ -113,6 +110,15 @@ fn part_two(input: String) -> u64 {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn test_part_one() {
+        let input = "1abc2
+pqr3stu8vwx
+a1b2c3d4e5f
+treb7uchet";
+        assert_eq!(super::part_one(input.to_string()), 142);
+    }
+
     #[test]
     fn test_part_two() {
         let input = "two1nine
