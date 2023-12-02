@@ -1,26 +1,11 @@
 use std::collections::HashMap;
-use std::fs;
 
-fn part_one(input: String) -> u64 {
-    input.split('\n').fold(0, |acc, line| {
-        if line.is_empty() {
-            return acc;
-        }
-        let mut num = String::new();
-        let mut numeric_chars = line.chars().filter(|c| c.is_numeric());
-        let first = numeric_chars.next().unwrap();
-        num.push(first);
-        let last = match numeric_chars.next_back() {
-            Some(c) => c,
-            None => first,
-        };
-        num.push(last);
-        let num: u64 = num.parse().unwrap();
-        acc + num
-    })
+fn main() {
+    let input = include_str!("input.txt");
+    println!("sum: {}", part_two(input));
 }
 
-fn part_two(input: String) -> u64 {
+fn part_two(input: &str) -> u64 {
     let mut sum: u64 = 0;
     input.split('\n').for_each(|line| {
         let mut num = String::new();
@@ -111,15 +96,6 @@ fn part_two(input: String) -> u64 {
 #[cfg(test)]
 mod tests {
     #[test]
-    fn test_part_one() {
-        let input = "1abc2
-pqr3stu8vwx
-a1b2c3d4e5f
-treb7uchet";
-        assert_eq!(super::part_one(input.to_string()), 142);
-    }
-
-    #[test]
     fn test_part_two() {
         let input = "two1nine
 eightwothree
@@ -128,23 +104,18 @@ xtwone3four
 4nineeightseven2
 zoneight234
 7seven8threeeight"; // 29 + 83 + 13 + 24 + 42 + 14 + 78
-        assert_eq!(super::part_two(input.to_string()), 283);
+        assert_eq!(super::part_two(input), 283);
     }
 
     #[test]
     fn test_part_two_2() {
-        let input = "ctrv3hmvjphrffktwothree".to_string();
+        let input = "ctrv3hmvjphrffktwothree";
         assert_eq!(super::part_two(input), 33);
     }
 
     #[test]
     fn test_part_two_3() {
-        let input = "oneight".to_string();
+        let input = "oneight";
         assert_eq!(super::part_two(input), 18);
     }
-}
-
-fn main() {
-    let input = fs::read_to_string("input.txt").unwrap();
-    println!("sum: {}", part_two(input));
 }
