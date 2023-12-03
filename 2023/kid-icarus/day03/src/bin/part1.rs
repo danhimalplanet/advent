@@ -88,6 +88,7 @@ fn part_one(input: &str) -> u64 {
                 // in the middle of an adjacent num, keep pushing
                 (State::Ignore, true, _) => {
                     current_num.push(cell);
+                    // edge case for literally the last cell
                     if idx == grid.cells.len() - 1 {
                         sum += current_num.parse::<u64>().expect("not a number");
                         current_num.clear();
@@ -144,7 +145,7 @@ mod tests {
         let input =".............152#............*......792...334......741........................570*....335..............137..........338..........*......+...
 952.........................................................793......583..........623............11........730............50.116.........446";
         let grid = Grid::new(input);
-        assert!(grid.is_adjacent_to_symbol(1, 138));
+        assert!(grid.is_adjacent_to_symbol(1, 137));
     }
 
     #[test]
