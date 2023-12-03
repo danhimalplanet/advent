@@ -1,5 +1,11 @@
-fn part_one(_input: &str) -> u64 {
+fn part_one(input: &str) -> u64 {
     let lines = input.lines();
+    lines.enumerate();
+    0
+}
+
+fn is_symbol(c: char) -> bool {
+    !c.is_numeric() && c != '.'
 }
 
 fn main() {
@@ -16,5 +22,14 @@ mod tests {
         let input = "foo";
 
         assert_eq!(part_one(input), 8);
+    }
+
+    #[test]
+    fn test_is_symbol() {
+        assert!(is_symbol('a'));
+        assert!(!is_symbol('1'));
+        assert!(!is_symbol('.'));
+        assert!(is_symbol(' '));
+        assert!(is_symbol('!'));
     }
 }
